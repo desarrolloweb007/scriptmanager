@@ -70,6 +70,28 @@ module.exports = {
             inline: false
         });
 
+        // Comandos de tickets
+        embed.addFields({
+            name: '🎫 Sistema de Tickets',
+            value: [
+                '`!pticket <rol_id>` - Configura permisos de tickets',
+                '`!ticketsetup #canal | mensaje | rolID_soporte` - Configura sistema',
+                '`!ticketmsg Título | Mensaje | Emoji` - Crea mensaje de tickets',
+                '`!close` - Cierra un ticket (solo en canales de tickets)'
+            ].join('\n'),
+            inline: false
+        });
+
+        // Comandos de bloqueo
+        embed.addFields({
+            name: '🚫 Sistema de Bloqueo',
+            value: [
+                '`!sgconfig <rol_id>` - Configura permisos de bloqueo',
+                '`!sgblock <comando> <rol_id> <permitido>` - Bloquea comandos'
+            ].join('\n'),
+            inline: false
+        });
+
         // Comandos de utilidad
         embed.addFields({
             name: '⚙️ Utilidad',
@@ -104,7 +126,13 @@ module.exports = {
                 '`!verifymsg #canal | título | mensaje | rolID | emoji` - Crea verificación',
                 '`!pverify <rol_id>` - Configura permisos de verificación',
                 '`!listverify` - Lista mensajes de verificación',
-                '`!deleteverify <id>` - Elimina mensaje de verificación'
+                '`!deleteverify <id>` - Elimina mensaje de verificación',
+                '`!pticket <rol_id>` - Configura permisos de tickets',
+                '`!ticketsetup #canal | mensaje | rolID_soporte` - Configura sistema de tickets',
+                '`!ticketmsg Título | Mensaje | Emoji` - Crea mensaje de tickets',
+                '`!close` - Cierra un ticket',
+                '`!sgconfig <rol_id>` - Configura permisos de bloqueo',
+                '`!sgblock <comando> <rol_id> <permitido>` - Bloquea comandos'
             ].join('\n'),
             inline: false
         });
@@ -250,6 +278,30 @@ module.exports = {
             'pclear': [
                 '`/pclear rol:@Moderador` - Configura el rol Moderador para usar clear',
                 '`!pclear @Moderador` - Configura el rol Moderador para usar clear'
+            ],
+            'pticket': [
+                '`!pticket 123456789012345678` - Configura rol con ID para usar comandos de tickets',
+                '`!pticket 987654321098765432` - Configura otro rol para permisos de tickets'
+            ],
+            'ticketsetup': [
+                '`!ticketsetup #tickets | Bienvenido al ticket! Describe tu problema. | 123456789012345678`',
+                '`!ticketsetup #soporte | Hola! ¿En qué puedo ayudarte? | 987654321098765432`'
+            ],
+            'ticketmsg': [
+                '`!ticketmsg Soporte Técnico | Reacciona para abrir un ticket | 🎫`',
+                '`!ticketmsg Ayuda | ¿Necesitas ayuda? Reacciona aquí | ❓`'
+            ],
+            'close': [
+                '`!close` - Cierra el ticket actual (solo funciona en canales de tickets)'
+            ],
+            'sgconfig': [
+                '`!sgconfig 123456789012345678` - Configura rol con ID para usar comandos de bloqueo',
+                '`!sgconfig 987654321098765432` - Configura otro rol para permisos de bloqueo'
+            ],
+            'sgblock': [
+                '`!sgblock warn 123456789012345678 true` - Solo el rol puede usar warn',
+                '`!sgblock ban 987654321098765432 false` - Bloquea ban completamente',
+                '`!sgblock clear 123456789012345678 true` - Solo el rol puede usar clear'
             ]
         };
 
@@ -271,7 +323,13 @@ module.exports = {
             'kick': '• Expulsa al usuario del servidor\n• Verifica jerarquía de roles\n• Comprueba permisos del bot\n• Registra en logs de moderación',
             'ban': '• Banea temporal o permanentemente\n• Formato: 1d 2h 3m 4s o permanente\n• Desbanea automáticamente tras duración\n• Verifica permisos y jerarquía',
             'clear': '• Borra mensajes del canal actual o mencionado\n• Requiere rol autorizado configurado con pclear\n• Máximo 100 mensajes por comando\n• Solo borra mensajes de los últimos 14 días\n• Verifica permisos del bot y usuario',
-            'pclear': '• Configura el rol autorizado para usar clear\n• Solo administradores pueden configurar\n• Se guarda en data/clearconfig.json\n• Un rol por servidor\n• Requiere permisos de administrador'
+            'pclear': '• Configura el rol autorizado para usar clear\n• Solo administradores pueden configurar\n• Se guarda en data/clearconfig.json\n• Un rol por servidor\n• Requiere permisos de administrador',
+            'pticket': '• Configura qué rol puede usar comandos de tickets\n• Solo administradores pueden configurar\n• Se guarda en data/ticket_permisos.json\n• Un rol por servidor\n• Requiere permisos de administrador',
+            'ticketsetup': '• Configura el sistema de tickets del servidor\n• Define canal, mensaje personalizado y rol de soporte\n• Se guarda en data/ticket_config.json\n• Requiere permisos configurados con pticket\n• Usa | como separador de parámetros',
+            'ticketmsg': '• Crea mensaje de tickets con reacción\n• Define título, mensaje y emoji personalizado\n• Se guarda en data/ticket_message.json\n• Requiere sistema configurado con ticketsetup\n• Los usuarios reaccionan para abrir tickets',
+            'close': '• Cierra un ticket de soporte\n• Solo funciona en canales de tickets\n• Solo el propietario o personal de soporte puede cerrar\n• Elimina el canal automáticamente\n• Espera 5 segundos antes de eliminar',
+            'sgconfig': '• Configura qué rol puede usar comandos de bloqueo\n• Solo administradores pueden configurar\n• Se guarda en data/sgconfig.json\n• Un rol por servidor\n• Requiere permisos de administrador',
+            'sgblock': '• Bloquea un comando específico para todos excepto un rol\n• Requiere permisos configurados con sgconfig\n• Se guarda en data/command_block.json\n• Permite bloquear completamente o solo para un rol\n• Verifica permisos antes de ejecutar comandos'
         };
 
         return info[commandName] || null;
@@ -326,6 +384,28 @@ module.exports = {
                 `\`${currentPrefix}ban @usuario razón duración\` - Banea usuario`,
                 `\`${currentPrefix}clear [cantidad] [#canal]\` - Borra mensajes`,
                 `\`${currentPrefix}pclear @rol\` - Configura rol para clear`
+            ].join('\n'),
+            inline: false
+        });
+
+        // Comandos de tickets
+        embed.addFields({
+            name: '🎫 Sistema de Tickets',
+            value: [
+                `\`${currentPrefix}pticket <rol_id>\` - Configura permisos de tickets`,
+                `\`${currentPrefix}ticketsetup #canal | mensaje | rolID_soporte\` - Configura sistema`,
+                `\`${currentPrefix}ticketmsg Título | Mensaje | Emoji\` - Crea mensaje de tickets`,
+                `\`${currentPrefix}close\` - Cierra un ticket (solo en canales de tickets)`
+            ].join('\n'),
+            inline: false
+        });
+
+        // Comandos de bloqueo
+        embed.addFields({
+            name: '🚫 Sistema de Bloqueo',
+            value: [
+                `\`${currentPrefix}sgconfig <rol_id>\` - Configura permisos de bloqueo`,
+                `\`${currentPrefix}sgblock <comando> <rol_id> <permitido>\` - Bloquea comandos`
             ].join('\n'),
             inline: false
         });

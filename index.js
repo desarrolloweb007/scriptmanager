@@ -170,6 +170,31 @@ client.on(Events.MessageCreate, async message => {
     const command = client.commands.get(commandName);
     if (!command || !command.legacy) return;
 
+    // Verificar si el comando está bloqueado
+    try {
+        const sgblockCommand = require('./commands/sgblock.js');
+        const blockCheck = await sgblockCommand.checkCommandBlock(message, commandName);
+        
+        if (blockCheck.blocked) {
+            const { EmbedBuilder } = require('discord.js');
+            const embed = new EmbedBuilder()
+                .setColor('#ff0000')
+                .setTitle('🚫 Comando Bloqueado')
+                .setDescription(`El comando \`${commandName}\` está bloqueado.`)
+                .addFields({
+                    name: '📋 Información',
+                    value: blockCheck.reason,
+                    inline: false
+                })
+                .setTimestamp();
+            
+            return message.reply({ embeds: [embed] });
+        }
+    } catch (error) {
+        console.error('Error al verificar bloqueo de comando:', error);
+        // En caso de error, continuar con la ejecución
+    }
+
     try {
         await command.executeLegacy(message, args);
     } catch (error) {
@@ -194,6 +219,16 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
         await reactionHandler.handleReactionRemove(reaction, user);
     } catch (error) {
         console.error('Error en handleReactionRemove:', error);
+    }
+});
+
+// Manejo de eventos de reacciones para tickets
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+    try {
+        const ticketReactionHandler = require('./events/ticketReactionHandler.js');
+        await ticketReactionHandler.execute(reaction, user);
+    } catch (error) {
+        console.error('Error en ticketReactionHandler:', error);
     }
 });
 
