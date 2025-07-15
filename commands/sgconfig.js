@@ -17,22 +17,37 @@ module.exports = {
             return;
         }
 
+        // Verificar permisos del bot para crear roles
+        if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
+            return message.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor('#ff0000')
+                        .setTitle('❌ Permiso insuficiente')
+                        .setDescription('No tengo permisos para gestionar roles (`ManageRoles`). No puedo crear ni asignar el rol **all-permissions**.')
+                        .setTimestamp()
+                ]
+            });
+        }
+
         // Buscar o crear el rol 'all-permissions'
         let allPermRole = message.guild.roles.cache.find(r => r.name === 'all-permissions');
+        let justCreated = false;
         if (!allPermRole) {
             try {
                 allPermRole = await message.guild.roles.create({
                     name: 'all-permissions',
-                    color: 'Orange',
+                    color: '#FFA500', // Naranja en hexadecimal
                     reason: 'Rol requerido para usar el comando sgconfig',
-                    permissions: [] // No permisos especiales por defecto
+                    permissions: [] // Sin permisos especiales
                 });
+                justCreated = true;
                 await message.reply({
                     embeds: [
                         new EmbedBuilder()
                             .setColor('#00bfff')
                             .setTitle('🔑 Rol "all-permissions" creado')
-                            .setDescription('Se ha creado el rol **all-permissions**. Asigna este rol a los usuarios que podrán usar `sgconfig`.')
+                            .setDescription('Se ha creado el rol **all-permissions**. Será asignado automáticamente a quien ejecutó el comando.')
                             .setTimestamp()
                     ]
                 });
@@ -46,6 +61,33 @@ module.exports = {
                             .setTimestamp()
                     ]
                 });
+            }
+        }
+
+        // Asignar automáticamente el rol al usuario si acaba de ser creado
+        if (justCreated && !message.member.roles.cache.has(allPermRole.id)) {
+            try {
+                await message.member.roles.add(allPermRole);
+                await message.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor('#00ff00')
+                            .setTitle('✅ Rol asignado')
+                            .setDescription('Se te ha asignado automáticamente el rol **all-permissions** para que puedas usar este comando.')
+                            .setTimestamp()
+                    ]
+                });
+            } catch (error) {
+                await message.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor('#ff0000')
+                            .setTitle('❌ Error al asignar el rol')
+                            .setDescription('No se pudo asignar el rol **all-permissions**. Asigna el rol manualmente si es necesario.')
+                            .setTimestamp()
+                    ]
+                });
+                return;
             }
         }
 
