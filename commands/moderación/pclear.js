@@ -17,7 +17,9 @@ async function getPrefix(guildId) {
 
 module.exports = {
     name: 'pclear',
-    async execute(message, args) {
+    legacy: true,
+    data: { name: 'pclear' },
+    async executeLegacy(message, args) {
         const prefix = await getPrefix(message.guild.id);
         if (!message.content.startsWith(prefix + 'pclear')) return;
 

@@ -10,6 +10,7 @@ function parseDuration(str) {
 }
 
 module.exports = {
+    name: 'ban',
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Banea a un usuario del servidor')

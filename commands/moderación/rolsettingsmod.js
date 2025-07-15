@@ -18,6 +18,7 @@ const comandosModeracion = [
 ];
 
 module.exports = {
+    name: 'rolsettingsmod',
     data: new SlashCommandBuilder()
         .setName('rolsettingsmod')
         .setDescription('Configura qué rol puede usar un comando de moderación')

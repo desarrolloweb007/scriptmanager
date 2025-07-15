@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 
 module.exports = {
+    name: 'kick',
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Expulsa a un usuario del servidor')

@@ -29,6 +29,7 @@ async function getOrCreateMutedRole(guild) {
 }
 
 module.exports = {
+    name: 'mute',
     data: new SlashCommandBuilder()
         .setName('mute')
         .setDescription('Mutea a un usuario por un tiempo determinado')

@@ -14,6 +14,7 @@ function saveWarnings(warnings) {
 }
 
 module.exports = {
+    name: 'warn',
     data: new SlashCommandBuilder()
         .setName('warn')
         .setDescription('Advierte a un usuario y registra la advertencia')

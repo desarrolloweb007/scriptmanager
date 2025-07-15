@@ -14,6 +14,7 @@ function saveSettings(settings) {
 }
 
 module.exports = {
+    name: 'settingsmod',
     data: new SlashCommandBuilder()
         .setName('settingsmod')
         .setDescription('Configura el canal de logs de moderación')

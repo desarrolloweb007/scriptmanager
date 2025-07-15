@@ -58,6 +58,18 @@ module.exports = {
             inline: false
         });
 
+        // Comandos de verificación
+        embed.addFields({
+            name: '🔐 Verificación',
+            value: [
+                '`/verifymsg` - Crea mensaje de verificación con reacciones',
+                '`/pverify` - Configura permisos de verificación',
+                '`/listverify` - Lista mensajes de verificación activos',
+                '`/deleteverify` - Elimina mensaje de verificación'
+            ].join('\n'),
+            inline: false
+        });
+
         // Comandos de utilidad
         embed.addFields({
             name: '⚙️ Utilidad',
@@ -88,7 +100,11 @@ module.exports = {
                 '`!kick @usuario razón` - Expulsa usuario',
                 '`!ban @usuario razón duración` - Banea usuario',
                 '`!clear [cantidad] [#canal]` - Borra mensajes',
-                '`!pclear @rol` - Configura rol para clear'
+                '`!pclear @rol` - Configura rol para clear',
+                '`!verifymsg #canal | título | mensaje | rolID | emoji` - Crea verificación',
+                '`!pverify <rol_id>` - Configura permisos de verificación',
+                '`!listverify` - Lista mensajes de verificación',
+                '`!deleteverify <id>` - Elimina mensaje de verificación'
             ].join('\n'),
             inline: false
         });

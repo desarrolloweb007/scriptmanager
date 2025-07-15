@@ -26,7 +26,9 @@ async function loadWarnings() {
 
 module.exports = {
     name: 'warnings',
-    async execute(message, args) {
+    legacy: true,
+    data: { name: 'warnings' },
+    async executeLegacy(message, args) {
         const prefix = await getPrefix(message.guild.id);
         if (!message.content.startsWith(prefix + 'warnings')) return;
 

@@ -9,27 +9,45 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.MessageContent
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildModeration
     ]
 });
 
 // Colección para almacenar comandos
 client.commands = new Collection();
 
-// Cargar comandos desde la carpeta commands
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command = require(filePath);
+// Función para cargar comandos recursivamente
+function loadCommands(dir) {
+    const items = fs.readdirSync(dir);
     
-    if ('data' in command && 'execute' in command) {
-        client.commands.set(command.data.name, command);
-    } else {
-        console.log(`[ADVERTENCIA] El comando en ${filePath} no tiene las propiedades "data" o "execute" requeridas.`);
+    for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+        
+        if (stat.isDirectory()) {
+            // Cargar comandos de subcarpetas
+            loadCommands(fullPath);
+        } else if (item.endsWith('.js')) {
+            // Cargar comando
+            const command = require(fullPath);
+            
+            if ('data' in command && 'execute' in command) {
+                client.commands.set(command.data.name, command);
+                console.log(`✅ Comando slash cargado: ${command.data.name}`);
+            } else if ('name' in command && 'legacy' in command) {
+                // Comandos legacy (sin data)
+                client.commands.set(command.name, command);
+                console.log(`✅ Comando legacy cargado: ${command.name}`);
+            } else {
+                console.log(`[ADVERTENCIA] El comando en ${fullPath} no tiene las propiedades requeridas.`);
+            }
+        }
     }
 }
+
+// Cargar todos los comandos
+loadCommands(path.join(__dirname, 'commands'));
 
 // Evento cuando el bot está listo
 client.once(Events.ClientReady, () => {
@@ -129,6 +147,16 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.MessageCreate, async message => {
     if (message.author.bot) return;
     
+    // Ejecutar filtro automático de palabras prohibidas
+    try {
+        const warnfilterCommand = client.commands.get('warnfilter');
+        if (warnfilterCommand && warnfilterCommand.checkMessage) {
+            await warnfilterCommand.checkMessage(message);
+        }
+    } catch (error) {
+        console.error('Error en filtro automático:', error);
+    }
+    
     // Obtener el prefijo del servidor
     const prefixCommand = require('./commands/prefix.js');
     const currentPrefix = prefixCommand.getPrefix(message.guild.id);
@@ -147,6 +175,25 @@ client.on(Events.MessageCreate, async message => {
     } catch (error) {
         console.error(error);
         await message.reply('❌ Hubo un error al ejecutar este comando.');
+    }
+});
+
+// Manejo de eventos de reacciones para verificación
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+    try {
+        const reactionHandler = require('./events/reactionHandler.js');
+        await reactionHandler.handleReactionAdd(reaction, user);
+    } catch (error) {
+        console.error('Error en handleReactionAdd:', error);
+    }
+});
+
+client.on(Events.MessageReactionRemove, async (reaction, user) => {
+    try {
+        const reactionHandler = require('./events/reactionHandler.js');
+        await reactionHandler.handleReactionRemove(reaction, user);
+    } catch (error) {
+        console.error('Error en handleReactionRemove:', error);
     }
 });
 

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 
 module.exports = {
+    name: 'unmute',
     data: new SlashCommandBuilder()
         .setName('unmute')
         .setDescription('Desmutea a un usuario removiendo el rol Muted')
