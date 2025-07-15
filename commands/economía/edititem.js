@@ -23,7 +23,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para editar objetos de la tienda.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -50,7 +50,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar existencia del objeto
@@ -61,7 +61,7 @@ module.exports = {
                 .setTitle('❌ Objeto No Encontrado')
                 .setDescription(`No existe un objeto llamado **${nombre}** en la tienda.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar campo y valor
@@ -76,7 +76,7 @@ module.exports = {
                         .setTitle('❌ Precio Inválido')
                         .setDescription(priceValidation.message)
                         .setTimestamp();
-                    return message.reply({ embeds: [embed] });
+                    return message.reply({ embeds: [embed], flags: 64 });
                 }
                 value = priceValidation.price;
             } else if (field === 'stock') {
@@ -87,7 +87,7 @@ module.exports = {
                         .setTitle('❌ Stock Inválido')
                         .setDescription(stockValidation.message)
                         .setTimestamp();
-                    return message.reply({ embeds: [embed] });
+                    return message.reply({ embeds: [embed], flags: 64 });
                 }
                 value = stockValidation.stock;
             }
@@ -100,7 +100,7 @@ module.exports = {
                         .setTitle('❌ Rol Inválido')
                         .setDescription(roleValidation.message)
                         .setTimestamp();
-                    return message.reply({ embeds: [embed] });
+                    return message.reply({ embeds: [embed], flags: 64 });
                 }
             } else {
                 value = null;
@@ -115,7 +115,7 @@ module.exports = {
                     .setTitle('❌ Categoría Inexistente')
                     .setDescription(`La categoría **${value}** no existe. Crea la categoría primero con \`${currentPrefix}addcategory\`.`)
                     .setTimestamp();
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
         } else if (!['price', 'stock', 'roleId', 'category'].includes(field)) {
             const embed = new EmbedBuilder()
@@ -123,7 +123,7 @@ module.exports = {
                 .setTitle('❌ Campo Inválido')
                 .setDescription('Solo puedes modificar los campos: `price`, `stock`, `roleId`, `category`.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Actualizar el objeto
@@ -136,14 +136,14 @@ module.exports = {
                 .addFields({ name: 'Campo Modificado', value: field, inline: true })
                 .addFields({ name: 'Nuevo Valor', value: value === null ? 'Ninguno' : value.toString(), inline: true })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#ff0000')
                 .setTitle('❌ Error')
                 .setDescription(result.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
     }
 };

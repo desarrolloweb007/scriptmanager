@@ -26,7 +26,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para configurar la economía.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -52,7 +52,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar cantidades
@@ -64,7 +64,7 @@ module.exports = {
                 .setTitle('❌ Valor Inválido')
                 .setDescription('El pago mínimo y máximo deben ser números válidos y mayores a 0.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         if (minValidation.amount > maxValidation.amount) {
             const embed = new EmbedBuilder()
@@ -72,7 +72,7 @@ module.exports = {
                 .setTitle('❌ Valor Inválido')
                 .setDescription('El pago mínimo no puede ser mayor que el máximo.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Guardar configuración
@@ -89,6 +89,6 @@ module.exports = {
             .setTitle('✅ Pago de Work Configurado')
             .setDescription(`El pago de \`work\` ahora es entre **${minValidation.amount} y ${maxValidation.amount} ${currency}**.`)
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 }; 

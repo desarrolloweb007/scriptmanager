@@ -54,7 +54,7 @@ module.exports = {
         if (newPrefix.includes(' ')) {
             return await interaction.reply({
                 content: '❌ El prefijo no puede contener espacios.',
-                ephemeral: true
+                flags: 64
             });
         }
 

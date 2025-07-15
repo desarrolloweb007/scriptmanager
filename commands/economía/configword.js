@@ -26,7 +26,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para configurar trabajos.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -52,7 +52,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Guardar trabajo
@@ -68,7 +68,7 @@ module.exports = {
                 .setTitle('❌ Trabajo Duplicado')
                 .setDescription('Ya existe un trabajo con ese nombre.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         jobs[message.guild.id][nombre] = descripcion;
         await fs.writeFile(JOBS_PATH, JSON.stringify(jobs, null, 2));
@@ -79,6 +79,6 @@ module.exports = {
             .setDescription(`Trabajo **${nombre}** agregado correctamente.`)
             .addFields({ name: 'Descripción', value: descripcion, inline: false })
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 }; 

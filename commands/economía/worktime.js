@@ -26,7 +26,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para configurar la economía.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -51,7 +51,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar cantidad
@@ -62,7 +62,7 @@ module.exports = {
                 .setTitle('❌ Valor Inválido')
                 .setDescription(amountValidation.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         const seconds = amountValidation.amount;
         if (seconds < 10 || seconds > 86400) {
@@ -71,7 +71,7 @@ module.exports = {
                 .setTitle('❌ Valor Inválido')
                 .setDescription('El tiempo debe ser entre 10 segundos y 86400 segundos (24h).')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Guardar configuración
@@ -85,6 +85,6 @@ module.exports = {
             .setTitle('✅ Cooldown de Work Configurado')
             .setDescription(`El cooldown de \`work\` ahora es de **${seconds} segundos**.`)
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 }; 

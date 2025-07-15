@@ -63,7 +63,7 @@ module.exports = {
                 })
                 .setTimestamp();
 
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
 
         } catch (error) {
             console.error('Error al configurar prueba:', error);
@@ -74,7 +74,7 @@ module.exports = {
                 .setDescription('Ocurrió un error al configurar la prueba. Inténtalo de nuevo.')
                 .setTimestamp();
             
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         }
     }
 }; 

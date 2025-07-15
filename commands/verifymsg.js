@@ -33,7 +33,7 @@ module.exports = {
                 })
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Parsear argumentos usando | como separador
@@ -82,7 +82,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Buscar o crear la categoría
@@ -128,7 +128,7 @@ module.exports = {
                 .setTitle('❌ Permisos Insuficientes')
                 .setDescription('No tengo permisos para enviar mensajes y agregar reacciones en ese canal.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar pares rol-emoji
@@ -143,7 +143,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         if (roleEmojiPairs.length > 20) {
             const embed = new EmbedBuilder()
@@ -151,7 +151,7 @@ module.exports = {
                 .setTitle('❌ Demasiados Roles')
                 .setDescription('Máximo 10 pares de rol-emoji por mensaje.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar roles y emojis
@@ -204,7 +204,7 @@ module.exports = {
                 value: 'Solo se usarán los pares válidos para crear el mensaje.',
                 inline: false
             });
-            await message.reply({ embeds: [embed] });
+            await message.reply({ embeds: [embed], flags: 64 });
         }
         if (validPairs.length === 0) {
             const embed = new EmbedBuilder()
@@ -217,7 +217,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         try {
             // Crear embed
@@ -302,7 +302,7 @@ module.exports = {
                 .setTitle('❌ Error del Sistema')
                 .setDescription('Ocurrió un error al crear el mensaje de verificación. Inténtalo de nuevo.')
                 .setTimestamp();
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         }
     }
 }; 

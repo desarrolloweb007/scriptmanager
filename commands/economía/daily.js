@@ -35,7 +35,7 @@ module.exports = {
                 .setTitle('⏳ Cooldown Activo')
                 .setDescription(`Ya reclamaste tu recompensa diaria.\nVuelve a intentarlo en **${hours}h ${minutes}m ${seconds}s**.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Dar recompensa

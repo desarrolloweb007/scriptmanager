@@ -23,7 +23,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para crear categorías en la tienda.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -49,7 +49,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         if (nombre.length < 2 || nombre.length > 30) {
@@ -58,7 +58,7 @@ module.exports = {
                 .setTitle('❌ Nombre Inválido')
                 .setDescription('El nombre de la categoría debe tener entre 2 y 30 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         if (descripcion.length < 2 || descripcion.length > 100) {
@@ -67,7 +67,7 @@ module.exports = {
                 .setTitle('❌ Descripción Inválida')
                 .setDescription('La descripción debe tener entre 2 y 100 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Guardar la categoría
@@ -83,14 +83,14 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#ff0000')
                 .setTitle('❌ Error')
                 .setDescription(result.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
     }
 };

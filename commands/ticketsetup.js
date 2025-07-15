@@ -32,7 +32,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Parsear argumentos usando | como separador
@@ -79,7 +79,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Buscar o crear la categoría
@@ -124,7 +124,7 @@ module.exports = {
                 .setTitle('❌ ID de Rol Inválido')
                 .setDescription('El ID del rol de soporte debe ser un número válido de Discord.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         // Verificar que el rol existe
         const supportRole = message.guild.roles.cache.get(supportRoleId);
@@ -134,7 +134,7 @@ module.exports = {
                 .setTitle('❌ Rol de Soporte No Encontrado')
                 .setDescription(`No se encontró un rol con el ID \`${supportRoleId}\` en este servidor.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         // Validar mensaje
         if (ticketMessage.length < 5) {
@@ -143,7 +143,7 @@ module.exports = {
                 .setTitle('❌ Mensaje Demasiado Corto')
                 .setDescription('El mensaje del ticket debe tener al menos 5 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         if (ticketMessage.length > 2000) {
             const embed = new EmbedBuilder()
@@ -151,7 +151,7 @@ module.exports = {
                 .setTitle('❌ Mensaje Demasiado Largo')
                 .setDescription('El mensaje del ticket no puede tener más de 2000 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         try {
             // Cargar configuración actual
@@ -205,7 +205,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         } catch (error) {
             console.error('Error al configurar sistema de tickets:', error);
             const embed = new EmbedBuilder()
@@ -213,7 +213,7 @@ module.exports = {
                 .setTitle('❌ Error del Sistema')
                 .setDescription('Ocurrió un error al configurar el sistema de tickets. Inténtalo de nuevo.')
                 .setTimestamp();
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         }
     }
 }; 

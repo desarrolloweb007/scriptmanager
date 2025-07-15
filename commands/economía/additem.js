@@ -23,7 +23,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para agregar objetos a la tienda.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -50,7 +50,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar categoría existente
@@ -61,7 +61,7 @@ module.exports = {
                 .setTitle('❌ Categoría Inexistente')
                 .setDescription(`La categoría **${categoria}** no existe. Crea la categoría primero con \`${currentPrefix}addcategory\`.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar precio
@@ -72,7 +72,7 @@ module.exports = {
                 .setTitle('❌ Precio Inválido')
                 .setDescription(priceValidation.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar stock
@@ -83,7 +83,7 @@ module.exports = {
                 .setTitle('❌ Stock Inválido')
                 .setDescription(stockValidation.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar roleId si se especifica
@@ -96,7 +96,7 @@ module.exports = {
                     .setTitle('❌ Rol Inválido')
                     .setDescription(roleValidation.message)
                     .setTimestamp();
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
             finalRoleId = roleId;
         }
@@ -122,14 +122,14 @@ module.exports = {
                     { name: 'Rol Asociado', value: finalRoleId === 'none' ? 'Ninguno' : `<@&${finalRoleId}>`, inline: true }
                 )
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#ff0000')
                 .setTitle('❌ Error')
                 .setDescription(result.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
     }
 };

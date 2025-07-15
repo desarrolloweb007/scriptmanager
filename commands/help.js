@@ -171,6 +171,56 @@ module.exports = {
             await interaction.reply({ embeds: [errorEmbed], flags: 64 });
         }
     },
+    legacy: true,
+    async executeLegacy(message, args) {
+        try {
+            const prefixCommand = require('./prefix.js');
+            const currentPrefix = prefixCommand.getPrefix(message.guild.id);
+            const categories = getCommandsByCategory();
+            const embed = new EmbedBuilder()
+                .setColor('#7289da')
+                .setTitle('🤖 Comandos del Bot de Roles')
+                .setDescription('Aquí tienes todos los comandos disponibles organizados por categorías.')
+                .setTimestamp()
+                .setFooter({ text: `Usa ${currentPrefix}help <comando> para información detallada` });
+
+            for (const [cat, cmds] of Object.entries(categories)) {
+                const fields = splitFields(cmds.map(cmd => cmd.replace(/!help/g, `${currentPrefix}help`).replace(/!prefix/g, `${currentPrefix}prefix`)));
+                fields.forEach((value, i) => {
+                    embed.addFields({
+                        name: fields.length > 1 ? `${cat} (${i+1})` : cat,
+                        value: value.trim(),
+                        inline: false
+                    });
+                });
+            }
+
+            embed.addFields({
+                name: 'ℹ️ Información',
+                value: [
+                    '• Los comandos slash requieren permisos específicos',
+                    '• Los comandos legacy funcionan con el prefijo configurado',
+                    '• El sistema de autoasignación usa botones interactivos',
+                    '• Todos los comandos incluyen verificaciones de seguridad'
+                ].join('\n'),
+                inline: false
+            });
+
+            await message.reply({ embeds: [embed], flags: 64 });
+        } catch (err) {
+            const errorEmbed = new EmbedBuilder()
+                .setColor('Red')
+                .setTitle('❌ Error al mostrar la ayuda')
+                .setDescription('Ocurrió un error al generar la lista de comandos.')
+                .addFields({
+                    name: 'Detalles',
+                    value: err.message || String(err),
+                    inline: false
+                })
+                .setTimestamp();
+            await message.reply({ embeds: [errorEmbed], flags: 64 });
+        }
+    },
     async showCommandHelp(interaction, commandName) {
         const command = interaction.client.commands.get(commandName);
         if (!command) {

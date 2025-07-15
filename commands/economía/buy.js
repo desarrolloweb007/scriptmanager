@@ -36,7 +36,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener objeto de la tienda
@@ -49,7 +49,7 @@ module.exports = {
                 .setTitle('❌ Objeto No Encontrado')
                 .setDescription(`No existe un objeto llamado **${nombre}** en la tienda.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar stock
@@ -59,7 +59,7 @@ module.exports = {
                 .setTitle('⚠️ Sin Stock')
                 .setDescription(`El objeto **${nombre}** está agotado.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar saldo
@@ -70,7 +70,7 @@ module.exports = {
                 .setTitle('❌ Saldo Insuficiente')
                 .setDescription(`No tienes suficiente saldo para comprar **${nombre}**.\n\nTu saldo: **${saldo} ${currency}**\nPrecio: **${objeto.price} ${currency}**`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar inventario si tiene roleId
@@ -82,7 +82,7 @@ module.exports = {
                     .setTitle('⚠️ Ya Tienes Este Rol')
                     .setDescription('Ya tienes este objeto en tu cuenta (rol asignado).')
                     .setTimestamp();
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
             // Verificar si ya está en inventario
             const inventory = await getInventory(message.author.id, message.guild.id);
@@ -92,7 +92,7 @@ module.exports = {
                     .setTitle('⚠️ Ya Tienes Este Objeto')
                     .setDescription('Ya tienes este objeto en tu inventario.')
                     .setTimestamp();
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
         }
 
@@ -104,7 +104,7 @@ module.exports = {
                     .setTitle('❌ Permiso Insuficiente')
                     .setDescription('No tengo permisos para asignar roles. Solicita a un administrador que me otorgue el permiso "Gestionar Roles".')
                     .setTimestamp();
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
             try {
                 await message.member.roles.add(objeto.roleId, `Compra de objeto ${nombre} en la tienda`);
@@ -114,7 +114,7 @@ module.exports = {
                     .setTitle('❌ Error al Asignar Rol')
                     .setDescription('No pude asignar el rol. Verifica la jerarquía de roles y mis permisos.')
                     .setTimestamp();
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
         }
 
@@ -143,6 +143,6 @@ module.exports = {
                 { name: 'Rol Asignado', value: objeto.roleId ? `<@&${objeto.roleId}>` : 'Ninguno', inline: true }
             )
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 };

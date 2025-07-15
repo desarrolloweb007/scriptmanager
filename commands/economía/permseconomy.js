@@ -25,7 +25,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('Solo los administradores pueden configurar permisos de economía.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -42,7 +42,7 @@ module.exports = {
                 .setTitle('❌ Rol Inválido')
                 .setDescription(roleValidation.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar comandos
@@ -62,7 +62,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Guardar permisos
@@ -80,6 +80,6 @@ module.exports = {
             .setTitle('✅ Permisos de Economía Configurados')
             .setDescription(`El rol ${roleValidation.role} ahora puede usar los comandos: **${comandos.join(', ')}**`)
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 }; 

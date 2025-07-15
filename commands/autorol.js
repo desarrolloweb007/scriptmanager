@@ -49,7 +49,7 @@ module.exports = {
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
             return await interaction.reply({
                 content: '❌ No tengo permisos para gestionar roles en este servidor.',
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -58,7 +58,7 @@ module.exports = {
             if (role.position >= interaction.guild.members.me.roles.highest.position) {
                 return await interaction.reply({
                     content: `❌ No puedo gestionar el rol ${role.name} porque es igual o superior a mi rol más alto.`,
-                    ephemeral: true
+                    flags: 64
                 });
             }
         }

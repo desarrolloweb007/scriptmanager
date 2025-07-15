@@ -34,7 +34,7 @@ module.exports = {
                 .setTitle('❌ Usuario No Encontrado')
                 .setDescription('No se pudo encontrar el usuario especificado.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener saldo

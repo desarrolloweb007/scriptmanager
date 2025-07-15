@@ -26,7 +26,7 @@ module.exports = {
                 .setTitle('❌ Error de Permisos')
                 .setDescription('No tienes permisos para configurar la economía.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Obtener argumentos
@@ -53,7 +53,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         const amount = amountValidation.amount;
 
@@ -68,6 +68,6 @@ module.exports = {
             .setTitle('✅ Recompensa Diaria Configurada')
             .setDescription(`La recompensa diaria ahora es de **${amount} ${currency}**.`)
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 }; 

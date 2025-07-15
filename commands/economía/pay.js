@@ -38,7 +38,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // No permitir transferirse a sí mismo
@@ -48,7 +48,7 @@ module.exports = {
                 .setTitle('❌ No Permitido')
                 .setDescription('No puedes transferirte monedas a ti mismo.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar cantidad
@@ -59,7 +59,7 @@ module.exports = {
                 .setTitle('❌ Cantidad Inválida')
                 .setDescription(amountValidation.message)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         const amount = amountValidation.amount;
 
@@ -71,7 +71,7 @@ module.exports = {
                 .setTitle('❌ Saldo Insuficiente')
                 .setDescription(`No tienes suficiente saldo para transferir **${amount}**.`)
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Realizar transferencia
@@ -85,6 +85,6 @@ module.exports = {
             .setDescription(`Has transferido **${amount} ${currency}** a ${target}.`)
             .addFields({ name: 'Tu Nuevo Saldo', value: `**${saldo - amount} ${currency}**`, inline: true })
             .setTimestamp();
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], flags: 64 });
     }
 };

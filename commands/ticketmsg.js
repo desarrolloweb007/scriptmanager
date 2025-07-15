@@ -32,7 +32,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Parsear argumentos usando | como separador
@@ -63,7 +63,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         const title = parts[0];
@@ -77,7 +77,7 @@ module.exports = {
                 .setTitle('❌ Título Demasiado Corto')
                 .setDescription('El título debe tener al menos 3 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         if (title.length > 256) {
             const embed = new EmbedBuilder()
@@ -85,7 +85,7 @@ module.exports = {
                 .setTitle('❌ Título Demasiado Largo')
                 .setDescription('El título no puede tener más de 256 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         // Validar descripción
         if (description.length < 5) {
@@ -94,7 +94,7 @@ module.exports = {
                 .setTitle('❌ Mensaje Demasiado Corto')
                 .setDescription('El mensaje debe tener al menos 5 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         if (description.length > 2000) {
             const embed = new EmbedBuilder()
@@ -102,7 +102,7 @@ module.exports = {
                 .setTitle('❌ Mensaje Demasiado Largo')
                 .setDescription('El mensaje no puede tener más de 2000 caracteres.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         // Validar emoji
         const emojiRegex = /^[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|<a?:.+?:\d+>$/u;
@@ -112,7 +112,7 @@ module.exports = {
                 .setTitle('❌ Emoji Inválido')
                 .setDescription('El emoji proporcionado no es válido.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Verificar que el sistema esté configurado y obtener canal/categoría
@@ -136,7 +136,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         // Buscar el canal configurado
         const channel = message.guild.channels.cache.get(config.channelId);
@@ -146,7 +146,7 @@ module.exports = {
                 .setTitle('❌ Canal de Tickets No Encontrado')
                 .setDescription('No se encontró el canal configurado para los tickets. Usa `!ticketsetup` para reconfigurar.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         // Verificar permisos del bot en el canal
         if (!channel.permissionsFor(message.guild.members.me).has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions])) {
@@ -155,7 +155,7 @@ module.exports = {
                 .setTitle('❌ Permisos Insuficientes')
                 .setDescription('No tengo permisos para enviar mensajes y agregar reacciones en el canal configurado.')
                 .setTimestamp();
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
         try {
             // Crear embed
@@ -187,7 +187,7 @@ module.exports = {
                         inline: false
                     })
                     .setTimestamp();
-                return message.reply({ embeds: [errorEmbed] });
+                return message.reply({ embeds: [errorEmbed], flags: 64 });
             }
             // Guardar configuración del mensaje
             const ticketMessagePath = path.join(__dirname, '../data/ticket_message.json');
@@ -231,7 +231,7 @@ module.exports = {
                     inline: false
                 })
                 .setTimestamp();
-            message.reply({ embeds: [confirmEmbed] });
+            message.reply({ embeds: [confirmEmbed], flags: 64 });
         } catch (error) {
             console.error('Error al crear mensaje de tickets:', error);
             const embed = new EmbedBuilder()
@@ -239,7 +239,7 @@ module.exports = {
                 .setTitle('❌ Error del Sistema')
                 .setDescription('Ocurrió un error al crear el mensaje de tickets. Inténtalo de nuevo.')
                 .setTimestamp();
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         }
     }
 }; 

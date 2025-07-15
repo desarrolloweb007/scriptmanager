@@ -33,7 +33,7 @@ module.exports = {
                 })
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Verificar argumentos
@@ -58,7 +58,7 @@ module.exports = {
                 })
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         const word = args[0].toLowerCase().trim();
@@ -71,7 +71,7 @@ module.exports = {
                 .setDescription('La palabra debe tener al menos 2 caracteres.')
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         if (word.length > 50) {
@@ -81,7 +81,7 @@ module.exports = {
                 .setDescription('La palabra no puede tener más de 50 caracteres.')
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         try {
@@ -109,7 +109,7 @@ module.exports = {
                     .setDescription(`La palabra \`${word}\` ya está en el filtro.`)
                     .setTimestamp();
                 
-                return message.reply({ embeds: [embed] });
+                return message.reply({ embeds: [embed], flags: 64 });
             }
 
             // Agregar palabra
@@ -138,7 +138,7 @@ module.exports = {
                 })
                 .setTimestamp();
 
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
 
         } catch (error) {
             console.error('Error al agregar palabra:', error);
@@ -149,7 +149,7 @@ module.exports = {
                 .setDescription('Ocurrió un error al agregar la palabra. Inténtalo de nuevo.')
                 .setTimestamp();
             
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         }
     }
 }; 

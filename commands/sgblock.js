@@ -33,7 +33,7 @@ module.exports = {
                 })
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Verificar argumentos
@@ -62,7 +62,7 @@ module.exports = {
                 })
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         const commandName = args[0].toLowerCase();
@@ -77,7 +77,7 @@ module.exports = {
                 .setDescription('El nombre del comando debe tener al menos 2 caracteres.')
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar ID del rol
@@ -88,7 +88,7 @@ module.exports = {
                 .setDescription('El ID del rol debe ser un número válido de Discord.')
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Verificar que el rol existe
@@ -100,7 +100,7 @@ module.exports = {
                 .setDescription(`No se encontró un rol con el ID \`${roleId}\` en este servidor.`)
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         // Validar valor de permitido
@@ -111,7 +111,7 @@ module.exports = {
                 .setDescription('El valor de permitido debe ser `true` o `false`.')
                 .setTimestamp();
             
-            return message.reply({ embeds: [embed] });
+            return message.reply({ embeds: [embed], flags: 64 });
         }
 
         const isAllowed = allowed === 'true';
@@ -168,7 +168,7 @@ module.exports = {
                 })
                 .setTimestamp();
 
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
 
         } catch (error) {
             console.error('Error al bloquear comando:', error);
@@ -179,7 +179,7 @@ module.exports = {
                 .setDescription('Ocurrió un error al bloquear el comando. Inténtalo de nuevo.')
                 .setTimestamp();
             
-            message.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed], flags: 64 });
         }
     },
 
