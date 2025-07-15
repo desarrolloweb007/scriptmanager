@@ -101,9 +101,17 @@ module.exports = {
         });
     },
 
-    // Comando legacy con prefijo !
+    // Comando legacy con prefijo dinámico
     legacy: true,
     async executeLegacy(message, args) {
+        // Verificar prefijo dinámico
+        const prefixCommand = require('./prefix.js');
+        const currentPrefix = prefixCommand.getPrefix(message.guild.id);
+        
+        if (!message.content.startsWith(currentPrefix + 'autorol')) {
+            return;
+        }
+
         // Verificar permisos del usuario
         if (!message.member.permissions.has(PermissionFlagsBits.ManageRoles)) {
             return await message.reply('❌ No tienes permisos para gestionar roles.');
@@ -111,7 +119,7 @@ module.exports = {
 
         // Verificar argumentos mínimos
         if (args.length < 3) {
-            return await message.reply('❌ Uso correcto: `!autorol "Título" "Descripción" @rol1 @rol2 @rol3...`');
+            return await message.reply(`❌ Uso correcto: \`${currentPrefix}autorol "Título" "Descripción" @rol1 @rol2 @rol3...\``);
         }
 
         // Extraer título y descripción
@@ -143,7 +151,7 @@ module.exports = {
         }
 
         if (!title || !description) {
-            return await message.reply('❌ Debes proporcionar un título y descripción entre comillas.');
+            return await message.reply(`❌ Debes proporcionar un título y descripción entre comillas.\n\nEjemplo: \`${currentPrefix}autorol "Roles de Juegos" "Selecciona tus juegos favoritos" @Gamer @Streamer\``);
         }
 
         // Obtener roles mencionados

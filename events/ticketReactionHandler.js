@@ -107,11 +107,22 @@ module.exports = {
                 return;
             }
 
-            // Crear el canal del ticket
+            // Obtener la categoría configurada
+            let category = guild.channels.cache.get(guildConfig.categoryId);
+            if (!category || category.type !== ChannelType.GuildCategory) {
+                // Si la categoría no existe, crearla
+                category = await guild.channels.create({
+                    name: 'PANEL TICKET',
+                    type: ChannelType.GuildCategory,
+                    reason: 'Categoría de tickets creada automáticamente'
+                });
+            }
+
+            // Crear el canal del ticket dentro de la categoría
             const ticketChannel = await guild.channels.create({
                 name: `ticket-${user.id}`,
                 type: ChannelType.GuildText,
-                parent: message.channel.parent, // Mismo categoría que el canal original
+                parent: category.id,
                 permissionOverwrites: [
                     {
                         id: guild.id, // @everyone

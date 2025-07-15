@@ -69,6 +69,12 @@ module.exports = {
                 return;
             }
 
+            // Verificar si el usuario ya tiene el rol
+            if (member.roles.cache.has(role.id)) {
+                console.log(`Usuario ${user.tag} ya tiene el rol ${role.name}`);
+                return;
+            }
+
             // Asignar rol al usuario
             try {
                 await member.roles.add(role, `Verificación automática - ${emoji}`);
@@ -169,6 +175,12 @@ module.exports = {
 
             if (role.position >= guild.members.me.roles.highest.position) {
                 console.error(`No puedo gestionar el rol ${role.name} - jerarquía insuficiente`);
+                return;
+            }
+
+            // Verificar si el usuario tiene el rol
+            if (!member.roles.cache.has(role.id)) {
+                console.log(`Usuario ${user.tag} no tiene el rol ${role.name}`);
                 return;
             }
 

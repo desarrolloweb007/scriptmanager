@@ -1,7 +1,38 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+
+const PREFIXES_PATH = path.join(__dirname, '../data/prefixes.json');
 
 // Almacenamiento temporal de prefijos por servidor
 const serverPrefixes = new Map();
+
+// Cargar prefijos desde el archivo al iniciar
+function loadPrefixes() {
+    try {
+        if (fs.existsSync(PREFIXES_PATH)) {
+            const data = fs.readFileSync(PREFIXES_PATH, 'utf8');
+            const prefixes = JSON.parse(data);
+            for (const guildId in prefixes) {
+                serverPrefixes.set(guildId, prefixes[guildId]);
+            }
+        }
+    } catch (e) {
+        console.error('Error al cargar prefixes.json:', e);
+    }
+}
+
+// Guardar prefijos en el archivo
+function savePrefixes() {
+    const obj = {};
+    for (const [guildId, prefix] of serverPrefixes.entries()) {
+        obj[guildId] = prefix;
+    }
+    fs.writeFileSync(PREFIXES_PATH, JSON.stringify(obj, null, 2));
+}
+
+// Cargar prefijos al iniciar
+loadPrefixes();
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,6 +60,7 @@ module.exports = {
 
         // Guardar el nuevo prefijo
         serverPrefixes.set(guildId, newPrefix);
+        savePrefixes();
 
         const embed = new EmbedBuilder()
             .setColor('#00ff00')
@@ -72,6 +104,7 @@ module.exports = {
 
         // Guardar el nuevo prefijo
         serverPrefixes.set(message.guild.id, newPrefix);
+        savePrefixes();
 
         const embed = new EmbedBuilder()
             .setColor('#00ff00')

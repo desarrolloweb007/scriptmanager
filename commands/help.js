@@ -92,6 +92,21 @@ module.exports = {
             inline: false
         });
 
+        // Comandos de filtro de palabras y moderación avanzada
+        embed.addFields({
+            name: '🛡️ Moderación Avanzada',
+            value: [
+                '`!addword palabra` - Añade palabra prohibida',
+                '`!removeword palabra` - Elimina palabra prohibida',
+                '`!listwords` - Lista palabras prohibidas',
+                '`!autopunish tipo cantidad` - Configura castigo automático',
+                '`!checkinfractions @usuario` - Verifica infracciones',
+                '`!modperms <rol_id> <comando> <permitido>` - Permisos de moderación',
+                '`!warnfilter` - Activa/desactiva filtro de advertencias'
+            ].join('\n'),
+            inline: false
+        });
+
         // Comandos de utilidad
         embed.addFields({
             name: '⚙️ Utilidad',
@@ -100,6 +115,33 @@ module.exports = {
                 '`/prefix` - Configura el prefijo del bot',
                 '`/info` - Información del bot ScriptManager',
                 '`/help <comando>` - Información detallada de un comando'
+            ].join('\n'),
+            inline: false
+        });
+
+        // Comandos de economía
+        embed.addFields({
+            name: '💸 Economía',
+            value: [
+                '`!econconfig [nombre_moneda]` - Configura el nombre de la moneda',
+                '`!setdaily cantidad` - Establece la recompensa diaria',
+                '`!addcategory nombre | descripción` - Crea una categoría de tienda',
+                '`!additem nombre | categoría | roleID (opcional) | precio | cantidad` - Agrega objeto a la tienda',
+                '`!edititem nombre | campo | nuevo_valor` - Edita un objeto de la tienda',
+                '`!removeitem nombre` - Elimina un objeto de la tienda',
+                '`!shop [categoría]` - Muestra la tienda',
+                '`!buy nombre_objeto` - Compra un objeto',
+                '`!balance [@usuario]` - Muestra el saldo',
+                '`!daily` - Reclama recompensa diaria',
+                '`!work` - Trabaja por monedas',
+                '`!pay @usuario cantidad` - Transfiere monedas',
+                '`!leaderboard` - Ranking de usuarios',
+                '`!ptienda rolID` - Configura rol admin de tienda',
+                '`!worktime set segundos` - Configura cooldown de work',
+                '`!workpay min max` - Configura pago de work',
+                '`!configword add nombre | descripción` - Agrega trabajo personalizado',
+                '`!work add nombre | descripción` - Alias para agregar trabajo',
+                '`!permseconomy rolID comando1,comando2,...` - Permisos de economía por rol'
             ].join('\n'),
             inline: false
         });
@@ -302,6 +344,78 @@ module.exports = {
                 '`!sgblock warn 123456789012345678 true` - Solo el rol puede usar warn',
                 '`!sgblock ban 987654321098765432 false` - Bloquea ban completamente',
                 '`!sgblock clear 123456789012345678 true` - Solo el rol puede usar clear'
+            ],
+            'econconfig': [
+                '`!econconfig [nombre_moneda]` - Configura el nombre de la moneda',
+                '`!econconfig moneda` - Cambia el nombre de la moneda a "moneda"'
+            ],
+            'setdaily': [
+                '`!setdaily 100` - Establece la recompensa diaria a 100 monedas',
+                '`!setdaily 50` - Establece la recompensa diaria a 50 monedas'
+            ],
+            'addcategory': [
+                '`!addcategory "Juegos" "Categoría de juegos para la tienda"` - Crea una categoría',
+                '`!addcategory "Herramientas" "Categoría de herramientas"`'
+            ],
+            'additem': [
+                '`!additem "Espada de Hierro" "Armas" 123456789012345678 "100" "5"` - Agrega un objeto',
+                '`!additem "Poción de Vida" "Pociones" 987654321098765432 "50" "10"`'
+            ],
+            'edititem': [
+                '`!edititem "Espada de Hierro" nombre "Espada de Oro"` - Cambia el nombre',
+                '`!edititem "Espada de Hierro" precio "200"` - Cambia el precio'
+            ],
+            'removeitem': [
+                '`!removeitem "Espada de Hierro"` - Elimina el objeto'
+            ],
+            'shop': [
+                '`!shop` - Muestra todas las categorías',
+                '`!shop "Armas"` - Muestra los objetos de la categoría "Armas"'
+            ],
+            'buy': [
+                '`!buy "Espada de Hierro"` - Compra el objeto',
+                '`!buy "Poción de Vida"` - Compra el objeto'
+            ],
+            'balance': [
+                '`!balance` - Muestra tu saldo',
+                '`!balance @usuario` - Muestra el saldo del usuario'
+            ],
+            'daily': [
+                '`!daily` - Reclama tu recompensa diaria'
+            ],
+            'work': [
+                '`!work` - Trabaja por monedas'
+            ],
+            'pay': [
+                '`!pay @usuario 100` - Transfiere 100 monedas al usuario',
+                '`!pay @usuario 50` - Transfiere 50 monedas al usuario'
+            ],
+            'leaderboard': [
+                '`!leaderboard` - Muestra el ranking de usuarios'
+            ],
+            'ptienda': [
+                '`!ptienda 123456789012345678` - Configura el rol con ID para usar comandos de tienda',
+                '`!ptienda 987654321098765432` - Configura otro rol para permisos de tienda'
+            ],
+            'worktime': [
+                '`!worktime set 300` - Configura el cooldown de trabajo a 300 segundos',
+                '`!worktime set 600` - Configura el cooldown de trabajo a 600 segundos'
+            ],
+            'workpay': [
+                '`!workpay 10 20` - Configura el pago de trabajo entre 10 y 20 monedas',
+                '`!workpay 5 15` - Configura el pago de trabajo entre 5 y 15 monedas'
+            ],
+            'configword': [
+                '`!configword add "Trabajar en el Mercado" "Trabaja en el mercado local"` - Agrega un trabajo personalizado',
+                '`!configword add "Jugar en el Casino" "Gana dinero jugando en el casino"`'
+            ],
+            'work add': [
+                '`!work add "Trabajar en el Mercado" "Trabaja en el mercado local"` - Alias para agregar trabajo',
+                '`!work add "Jugar en el Casino" "Gana dinero jugando en el casino"`'
+            ],
+            'permseconomy': [
+                '`!permseconomy 123456789012345678 "warn,kick,ban"` - Permite comandos de economía para el rol con ID 123456789012345678',
+                '`!permseconomy 987654321098765432 "warn,kick,ban,econconfig,setdaily,addcategory,additem,edititem,removeitem,shop,buy,balance,daily,work,pay,leaderboard,ptienda,worktime,workpay,configword,work add,permseconomy"` - Permite todos los comandos de economía para el rol con ID 987654321098765432'
             ]
         };
 
@@ -329,7 +443,26 @@ module.exports = {
             'ticketmsg': '• Crea mensaje de tickets con reacción\n• Define título, mensaje y emoji personalizado\n• Se guarda en data/ticket_message.json\n• Requiere sistema configurado con ticketsetup\n• Los usuarios reaccionan para abrir tickets',
             'close': '• Cierra un ticket de soporte\n• Solo funciona en canales de tickets\n• Solo el propietario o personal de soporte puede cerrar\n• Elimina el canal automáticamente\n• Espera 5 segundos antes de eliminar',
             'sgconfig': '• Configura qué rol puede usar comandos de bloqueo\n• Solo administradores pueden configurar\n• Se guarda en data/sgconfig.json\n• Un rol por servidor\n• Requiere permisos de administrador',
-            'sgblock': '• Bloquea un comando específico para todos excepto un rol\n• Requiere permisos configurados con sgconfig\n• Se guarda en data/command_block.json\n• Permite bloquear completamente o solo para un rol\n• Verifica permisos antes de ejecutar comandos'
+            'sgblock': '• Bloquea un comando específico para todos excepto un rol\n• Requiere permisos configurados con sgconfig\n• Se guarda en data/command_block.json\n• Permite bloquear completamente o solo para un rol\n• Verifica permisos antes de ejecutar comandos',
+            'econconfig': '• Configura el nombre de la moneda del servidor\n• Solo administradores pueden configurar\n• Se guarda en data/econconfig.json\n• Un servidor puede tener una moneda única',
+            'setdaily': '• Establece la recompensa diaria para todos los usuarios\n• Solo administradores pueden configurar\n• Se guarda en data/daily_reward.json\n• La recompensa se otorga al reclamarla',
+            'addcategory': '• Crea una nueva categoría en la tienda\n• Solo administradores pueden crear\n• Se guarda en data/shop_categories.json\n• Cada categoría tiene un nombre y descripción',
+            'additem': '• Agrega un nuevo objeto a la tienda\n• Solo administradores pueden agregar\n• Se guarda en data/shop_items.json\n• Cada objeto tiene un nombre, categoría, precio, cantidad y rol opcional',
+            'edititem': '• Edita las propiedades de un objeto existente\n• Solo administradores pueden editar\n• Se guarda en data/shop_items.json\n• Puede cambiar nombre, precio, cantidad, rol opcional',
+            'removeitem': '• Elimina un objeto de la tienda\n• Solo administradores pueden eliminar\n• Se guarda en data/shop_items.json\n• Elimina el objeto de la lista',
+            'shop': '• Muestra todas las categorías de la tienda\n• Incluye nombre y descripción de cada categoría\n• Permite navegar a categorías específicas',
+            'buy': '• Permite a los usuarios comprar objetos de la tienda\n• Verifica saldo y permisos\n• Registra la compra en data/user_inventory.json\n• Actualiza el saldo del usuario',
+            'balance': '• Muestra el saldo del usuario o del mencionado\n• Incluye monedas totales y disponibles\n• Verifica permisos del bot y usuario',
+            'daily': '• Permite a los usuarios reclamar su recompensa diaria\n• Verifica cooldown y recompensa\n• Registra la recompensa en data/daily_rewards.json\n• Actualiza el saldo del usuario',
+            'work': '• Permite a los usuarios trabajar por monedas\n• Verifica cooldown y pago\n• Registra el trabajo en data/work_history.json\n• Actualiza el saldo del usuario',
+            'pay': '• Permite a los usuarios transferir monedas a otros usuarios\n• Verifica saldo y permisos\n• Registra la transferencia en data/user_transactions.json\n• Actualiza los saldos de ambos usuarios',
+            'leaderboard': '• Muestra el ranking de usuarios basado en el saldo\n• Incluye nombre de usuario, saldo y posición\n• Ordenado por saldo más alto',
+            'ptienda': '• Configura el rol que puede usar comandos de tienda\n• Solo administradores pueden configurar\n• Se guarda en data/ptienda.json\n• Un servidor puede tener un rol de tienda único',
+            'worktime': '• Configura el cooldown (tiempo de espera) para el comando de trabajo\n• Solo administradores pueden configurar\n• Se guarda en data/work_cooldown.json\n• El cooldown se aplica al reclamar la recompensa diaria',
+            'workpay': '• Configura el rango de pago para el comando de trabajo\n• Solo administradores pueden configurar\n• Se guarda en data/work_pay.json\n• El pago es aleatorio dentro del rango',
+            'configword': '• Agrega un nuevo trabajo personalizado que los usuarios pueden elegir\n• Solo administradores pueden agregar\n• Se guarda en data/custom_work.json\n• Cada trabajo tiene un nombre y descripción',
+            'work add': '• Alias para el comando `!work add`\n• Permite agregar un trabajo de forma más rápida',
+            'permseconomy': '• Permite a un rol usar comandos específicos de economía\n• Solo administradores pueden configurar\n• Se guarda en data/permseconomy.json\n• Un rol puede tener múltiples comandos permitidos'
         };
 
         return info[commandName] || null;
@@ -388,6 +521,17 @@ module.exports = {
             inline: false
         });
 
+        // Comandos de verificación
+        embed.addFields({
+            name: '🔐 Verificación',
+            value: [
+                `\`${currentPrefix}verifymsg #canal | título | mensaje | rolID | emoji\` - Crea mensaje de verificación`,
+                `\`${currentPrefix}pverify <rol_id>\` - Configura permisos de verificación`,
+                `\`${currentPrefix}listverify\` - Lista mensajes de verificación`,
+                `\`${currentPrefix}deleteverify <id>\` - Elimina mensaje de verificación`
+            ].join('\n'),
+            inline: false
+        });
         // Comandos de tickets
         embed.addFields({
             name: '🎫 Sistema de Tickets',
@@ -399,13 +543,26 @@ module.exports = {
             ].join('\n'),
             inline: false
         });
-
         // Comandos de bloqueo
         embed.addFields({
             name: '🚫 Sistema de Bloqueo',
             value: [
                 `\`${currentPrefix}sgconfig <rol_id>\` - Configura permisos de bloqueo`,
                 `\`${currentPrefix}sgblock <comando> <rol_id> <permitido>\` - Bloquea comandos`
+            ].join('\n'),
+            inline: false
+        });
+        // Comandos de filtro de palabras y moderación avanzada
+        embed.addFields({
+            name: '🛡️ Moderación Avanzada',
+            value: [
+                `\`${currentPrefix}addword palabra\` - Añade palabra prohibida`,
+                `\`${currentPrefix}removeword palabra\` - Elimina palabra prohibida`,
+                `\`${currentPrefix}listwords\` - Lista palabras prohibidas`,
+                `\`${currentPrefix}autopunish tipo cantidad\` - Configura castigo automático`,
+                `\`${currentPrefix}checkinfractions @usuario\` - Verifica infracciones`,
+                `\`${currentPrefix}modperms <rol_id> <comando> <permitido>\` - Permisos de moderación`,
+                `\`${currentPrefix}warnfilter\` - Activa/desactiva filtro de advertencias`
             ].join('\n'),
             inline: false
         });
@@ -418,6 +575,34 @@ module.exports = {
                 `\`${currentPrefix}prefix [nuevo_prefijo]\` - Configura prefijo`,
                 `\`${currentPrefix}info\` - Información del bot`,
                 `\`${currentPrefix}help <comando>\` - Información detallada`
+            ].join('\n'),
+            inline: false
+        });
+
+        // Comandos de economía
+        embed.addFields({
+            name: '💸 Economía',
+            value: [
+                `\`${currentPrefix}econconfig [nombre_moneda]\` - Configura el nombre de la moneda`,
+                `\`${currentPrefix}econconfig moneda\` - Cambia el nombre de la moneda a "moneda"`,
+                `\`${currentPrefix}setdaily cantidad\` - Establece la recompensa diaria a cantidad monedas`,
+                `\`${currentPrefix}addcategory nombre | descripción\` - Crea una categoría de tienda`,
+                `\`${currentPrefix}additem nombre | categoría | roleID (opcional) | precio | cantidad\` - Agrega objeto a la tienda`,
+                `\`${currentPrefix}edititem nombre | campo | nuevo_valor\` - Edita un objeto de la tienda`,
+                `\`${currentPrefix}removeitem nombre\` - Elimina un objeto de la tienda`,
+                `\`${currentPrefix}shop [categoría]\` - Muestra la tienda`,
+                `\`${currentPrefix}buy nombre_objeto\` - Compra un objeto`,
+                `\`${currentPrefix}balance [@usuario]\` - Muestra el saldo del usuario`,
+                `\`${currentPrefix}daily\` - Reclama recompensa diaria`,
+                `\`${currentPrefix}work\` - Trabaja por monedas`,
+                `\`${currentPrefix}pay @usuario cantidad\` - Transfiere monedas al usuario`,
+                `\`${currentPrefix}leaderboard\` - Muestra el ranking de usuarios`,
+                `\`${currentPrefix}ptienda <rol_id>\` - Configura rol admin de tienda`,
+                `\`${currentPrefix}worktime set segundos\` - Configura cooldown de work`,
+                `\`${currentPrefix}workpay min max\` - Configura pago de work`,
+                `\`${currentPrefix}configword add nombre | descripción\` - Agrega trabajo personalizado`,
+                `\`${currentPrefix}work add nombre | descripción\` - Alias para agregar trabajo`,
+                `\`${currentPrefix}permseconomy <rol_id> "comando1,comando2,..."\` - Permite comandos de economía para el rol`
             ].join('\n'),
             inline: false
         });
