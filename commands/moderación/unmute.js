@@ -24,7 +24,7 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Red').setDescription('❌ No tienes permisos para desmutear usuarios.')],
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -32,7 +32,7 @@ module.exports = {
         if (!mutedRole || !member.roles.cache.has(mutedRole.id)) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Orange').setDescription('⚠️ El usuario no está muteado.')],
-                ephemeral: true
+                flags: 64
             });
         }
 

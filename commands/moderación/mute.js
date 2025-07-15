@@ -57,7 +57,7 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Red').setDescription('❌ No tienes permisos para mutear usuarios.')],
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -65,7 +65,7 @@ module.exports = {
         if (!duration || duration < 1000) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Red').setDescription('❌ Duración inválida. Usa el formato: 1d 2h 3m 4s')],
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -73,7 +73,7 @@ module.exports = {
         if (member.roles.cache.has(mutedRole.id)) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Orange').setDescription('⚠️ El usuario ya está muteado.')],
-                ephemeral: true
+                flags: 64
             });
         }
 

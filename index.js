@@ -73,7 +73,7 @@ client.on(Events.InteractionCreate, async interaction => {
             
             const errorMessage = {
                 content: '❌ Hubo un error al ejecutar este comando.',
-                ephemeral: true
+                flags: 64
             };
 
             if (interaction.replied || interaction.deferred) {
@@ -96,7 +96,7 @@ client.on(Events.InteractionCreate, async interaction => {
             if (!role) {
                 return await interaction.reply({
                     content: '❌ El rol ya no existe.',
-                    ephemeral: true
+                    flags: 64
                 });
             }
 
@@ -104,7 +104,7 @@ client.on(Events.InteractionCreate, async interaction => {
             if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
                 return await interaction.reply({
                     content: '❌ No tengo permisos para gestionar roles en este servidor.',
-                    ephemeral: true
+                    flags: 64
                 });
             }
 
@@ -112,7 +112,7 @@ client.on(Events.InteractionCreate, async interaction => {
             if (role.position >= interaction.guild.members.me.roles.highest.position) {
                 return await interaction.reply({
                     content: '❌ No puedo gestionar este rol porque es igual o superior a mi rol más alto.',
-                    ephemeral: true
+                    flags: 64
                 });
             }
 
@@ -122,21 +122,21 @@ client.on(Events.InteractionCreate, async interaction => {
                     await member.roles.remove(role);
                     await interaction.reply({
                         content: `✅ Se ha removido el rol **${role.name}** de tu perfil.`,
-                        ephemeral: true
+                        flags: 64
                     });
                 } else {
                     // Asignar rol
                     await member.roles.add(role);
                     await interaction.reply({
                         content: `✅ Se ha asignado el rol **${role.name}** a tu perfil.`,
-                        ephemeral: true
+                        flags: 64
                     });
                 }
             } catch (error) {
                 console.error('Error al gestionar rol:', error);
                 await interaction.reply({
                     content: '❌ Hubo un error al gestionar el rol. Verifica que tengo los permisos necesarios.',
-                    ephemeral: true
+                    flags: 64
                 });
             }
         }

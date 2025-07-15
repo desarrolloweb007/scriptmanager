@@ -40,7 +40,7 @@ module.exports = {
                 embeds: [new EmbedBuilder()
                     .setColor('Red')
                     .setDescription('❌ No tienes permisos para advertir usuarios.')],
-                ephemeral: true
+                flags: 64
             });
         }
 

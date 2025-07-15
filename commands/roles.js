@@ -14,7 +14,7 @@ module.exports = {
         if (roles.size === 0) {
             return await interaction.reply({
                 content: '❌ No hay roles disponibles en este servidor.',
-                ephemeral: true
+                flags: 64
             });
         }
 

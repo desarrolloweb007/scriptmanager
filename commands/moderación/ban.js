@@ -38,21 +38,21 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Red').setDescription('❌ No tienes permisos para banear usuarios.')],
-                ephemeral: true
+                flags: 64
             });
         }
 
         if (!member) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Orange').setDescription('⚠️ El usuario no está en el servidor.')],
-                ephemeral: true
+                flags: 64
             });
         }
 
         if (!member.bannable) {
             return await interaction.reply({
                 embeds: [new EmbedBuilder().setColor('Red').setDescription('❌ No puedo banear a este usuario (jerarquía o permisos insuficientes).')],
-                ephemeral: true
+                flags: 64
             });
         }
 

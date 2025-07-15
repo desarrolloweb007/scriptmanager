@@ -23,7 +23,7 @@ module.exports = {
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
             return await interaction.reply({
                 content: '❌ No tengo permisos para gestionar roles en este servidor.',
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -31,7 +31,7 @@ module.exports = {
         if (role.position >= interaction.guild.members.me.roles.highest.position) {
             return await interaction.reply({
                 content: '❌ No puedo remover un rol que es igual o superior a mi rol más alto.',
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -39,7 +39,7 @@ module.exports = {
         if (!member.roles.cache.has(role.id)) {
             return await interaction.reply({
                 content: `❌ ${user} no tiene el rol ${role.name}.`,
-                ephemeral: true
+                flags: 64
             });
         }
 
@@ -64,7 +64,7 @@ module.exports = {
             console.error('Error al remover rol:', error);
             await interaction.reply({
                 content: '❌ Hubo un error al remover el rol. Verifica que tengo los permisos necesarios.',
-                ephemeral: true
+                flags: 64
             });
         }
     },
