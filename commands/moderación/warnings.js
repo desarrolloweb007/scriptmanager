@@ -1,47 +1,69 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
-const fs = require('fs');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const fs = require('fs/promises');
 const path = require('path');
 
 const warningsPath = path.join(__dirname, '../../data/warnings.json');
+const prefixesPath = path.join(__dirname, '../../data/prefixes.json');
 
-function loadWarnings() {
-    if (!fs.existsSync(warningsPath)) return {};
-    return JSON.parse(fs.readFileSync(warningsPath, 'utf8'));
+async function getPrefix(guildId) {
+    try {
+        const data = await fs.readFile(prefixesPath, 'utf8');
+        const prefixes = JSON.parse(data);
+        return prefixes[guildId] || '!';
+    } catch {
+        return '!';
+    }
+}
+
+async function loadWarnings() {
+    try {
+        const data = await fs.readFile(warningsPath, 'utf8');
+        return JSON.parse(data);
+    } catch {
+        return {};
+    }
 }
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('warnings')
-        .setDescription('Muestra las advertencias de un usuario')
-        .addUserOption(opt =>
-            opt.setName('usuario')
-                .setDescription('Usuario a consultar')
-                .setRequired(true))
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
+    name: 'warnings',
+    async execute(message, args) {
+        const prefix = await getPrefix(message.guild.id);
+        if (!message.content.startsWith(prefix + 'warnings')) return;
 
-    async execute(interaction) {
-        const user = interaction.options.getUser('usuario');
-        const guildId = interaction.guild.id;
-
-        // Verificar permisos
-        if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
-            return await interaction.reply({
+        if (!message.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+            return message.reply({
                 embeds: [new EmbedBuilder()
                     .setColor('Red')
-                    .setDescription('❌ No tienes permisos para ver advertencias.')],
-                ephemeral: true
+                    .setDescription('❌ No tienes permisos para ver advertencias.')]
             });
         }
 
-        const warnings = loadWarnings();
+        if (args.length < 1) {
+            return message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Uso correcto: `[prefijo]warnings @usuario`')]
+            });
+        }
+
+        const user = message.mentions.users.first();
+        if (!user) {
+            return message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Debes mencionar a un usuario válido.')]
+            });
+        }
+
+        const guildId = message.guild.id;
+        const warnings = await loadWarnings();
         const userWarnings = warnings[guildId]?.[user.id] || [];
 
         if (userWarnings.length === 0) {
-            return await interaction.reply({
+            return message.reply({
                 embeds: [new EmbedBuilder()
                     .setColor('Green')
-                    .setDescription(`✅ <@${user.id}> no tiene advertencias.`)],
-                ephemeral: true
+                    .setDescription(`✅ <@${user.id}> no tiene advertencias.`)]
             });
         }
 
@@ -59,7 +81,7 @@ module.exports = {
             });
         });
 
-        await interaction.reply({ embeds: [embed] });
-        console.log(`[WARNINGS] ${interaction.user.tag} consultó advertencias de ${user.tag} en ${interaction.guild.name}`);
+        await message.reply({ embeds: [embed] });
+        console.log(`[WARNINGS] ${message.author.tag} consultó advertencias de ${user.tag} en ${message.guild.name}`);
     }
 }; 

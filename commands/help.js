@@ -40,6 +40,24 @@ module.exports = {
             inline: false
         });
 
+        // Comandos de moderación
+        embed.addFields({
+            name: '🛡️ Moderación',
+            value: [
+                '`/warn` - Advierte a un usuario',
+                '`/warnings` - Muestra advertencias de un usuario',
+                '`/mute` - Mutea a un usuario por tiempo',
+                '`/unmute` - Desmutea a un usuario',
+                '`/kick` - Expulsa a un usuario',
+                '`/ban` - Banea a un usuario',
+                '`/clear` - Borra mensajes del canal',
+                '`/pclear` - Configura rol para clear',
+                '`/settingsmod` - Configura canal de logs',
+                '`/rolsettingsmod` - Configura permisos de comandos'
+            ].join('\n'),
+            inline: false
+        });
+
         // Comandos de utilidad
         embed.addFields({
             name: '⚙️ Utilidad',
@@ -62,7 +80,15 @@ module.exports = {
                 '`!autorol "Título" "Descripción" @rol1 @rol2` - Panel autoasignación',
                 '`!prefix [nuevo_prefijo]` - Configura prefijo',
                 '`!help` - Muestra comandos',
-                '`!info` - Información del bot'
+                '`!info` - Información del bot',
+                '`!warn @usuario razón` - Advierte usuario',
+                '`!warnings @usuario` - Muestra advertencias',
+                '`!mute @usuario duración razón` - Mutea usuario',
+                '`!unmute @usuario razón` - Desmutea usuario',
+                '`!kick @usuario razón` - Expulsa usuario',
+                '`!ban @usuario razón duración` - Banea usuario',
+                '`!clear [cantidad] [#canal]` - Borra mensajes',
+                '`!pclear @rol` - Configura rol para clear'
             ].join('\n'),
             inline: false
         });
@@ -174,6 +200,40 @@ module.exports = {
             'info': [
                 '`/info`',
                 '`!info`'
+            ],
+            'warn': [
+                '`/warn usuario:@usuario razon:Spam`',
+                '`!warn @usuario Spam`'
+            ],
+            'warnings': [
+                '`/warnings usuario:@usuario`',
+                '`!warnings @usuario`'
+            ],
+            'mute': [
+                '`/mute usuario:@usuario duracion:1h razon:Spam`',
+                '`!mute @usuario 1h Spam`'
+            ],
+            'unmute': [
+                '`/unmute usuario:@usuario razon:Arrepentimiento`',
+                '`!unmute @usuario Arrepentimiento`'
+            ],
+            'kick': [
+                '`/kick usuario:@usuario razon:Violación de reglas`',
+                '`!kick @usuario Violación de reglas`'
+            ],
+            'ban': [
+                '`/ban usuario:@usuario razon:Spam masivo duracion:7d`',
+                '`!ban @usuario Spam masivo 7d`'
+            ],
+            'clear': [
+                '`/clear cantidad:10` - Borra 10 mensajes del canal actual',
+                '`/clear cantidad:50 canal:#general` - Borra 50 mensajes del canal #general',
+                '`!clear 10` - Borra 10 mensajes del canal actual',
+                '`!clear 50 #general` - Borra 50 mensajes del canal #general'
+            ],
+            'pclear': [
+                '`/pclear rol:@Moderador` - Configura el rol Moderador para usar clear',
+                '`!pclear @Moderador` - Configura el rol Moderador para usar clear'
             ]
         };
 
@@ -187,7 +247,15 @@ module.exports = {
             'roles': '• Muestra roles ordenados por jerarquía\n• Incluye número de miembros por rol\n• Excluye roles gestionados por integraciones',
             'autorol': '• Crea botones interactivos para autoasignación\n• Máximo 5 roles por panel\n• Los usuarios pueden asignarse/removerse roles',
             'prefix': '• Cambia el prefijo solo para este servidor\n• Máximo 5 caracteres\n• No puede contener espacios\n• Se mantiene en memoria',
-            'info': '• Muestra información detallada del bot\n• Incluye estadísticas en tiempo real\n• Muestra uptime del bot\n• Información del desarrollador'
+            'info': '• Muestra información detallada del bot\n• Incluye estadísticas en tiempo real\n• Muestra uptime del bot\n• Información del desarrollador',
+            'warn': '• Registra advertencias en data/warnings.json\n• Verifica permisos de moderación\n• Muestra total de advertencias del usuario\n• Incluye fecha y moderador',
+            'warnings': '• Muestra las últimas 10 advertencias\n• Incluye razón, moderador y fecha\n• Formato de timestamp legible\n• Ordenadas por más recientes',
+            'mute': '• Crea rol Muted si no existe\n• Configura permisos automáticamente\n• Desmutea automáticamente tras la duración\n• Formato: 1d 2h 3m 4s',
+            'unmute': '• Remueve el rol Muted\n• Verifica que el usuario esté muteado\n• Registra la acción en logs\n• Solo para usuarios muteados',
+            'kick': '• Expulsa al usuario del servidor\n• Verifica jerarquía de roles\n• Comprueba permisos del bot\n• Registra en logs de moderación',
+            'ban': '• Banea temporal o permanentemente\n• Formato: 1d 2h 3m 4s o permanente\n• Desbanea automáticamente tras duración\n• Verifica permisos y jerarquía',
+            'clear': '• Borra mensajes del canal actual o mencionado\n• Requiere rol autorizado configurado con pclear\n• Máximo 100 mensajes por comando\n• Solo borra mensajes de los últimos 14 días\n• Verifica permisos del bot y usuario',
+            'pclear': '• Configura el rol autorizado para usar clear\n• Solo administradores pueden configurar\n• Se guarda en data/clearconfig.json\n• Un rol por servidor\n• Requiere permisos de administrador'
         };
 
         return info[commandName] || null;
@@ -226,6 +294,22 @@ module.exports = {
                 `\`${currentPrefix}removerol @usuario RolEjemplo\` - Remueve un rol`,
                 `\`${currentPrefix}roles\` - Lista todos los roles`,
                 `\`${currentPrefix}autorol "Título" "Descripción" @rol1 @rol2\` - Panel autoasignación`
+            ].join('\n'),
+            inline: false
+        });
+
+        // Comandos de moderación
+        embed.addFields({
+            name: '🛡️ Moderación',
+            value: [
+                `\`${currentPrefix}warn @usuario razón\` - Advierte usuario`,
+                `\`${currentPrefix}warnings @usuario\` - Muestra advertencias`,
+                `\`${currentPrefix}mute @usuario duración razón\` - Mutea usuario`,
+                `\`${currentPrefix}unmute @usuario razón\` - Desmutea usuario`,
+                `\`${currentPrefix}kick @usuario razón\` - Expulsa usuario`,
+                `\`${currentPrefix}ban @usuario razón duración\` - Banea usuario`,
+                `\`${currentPrefix}clear [cantidad] [#canal]\` - Borra mensajes`,
+                `\`${currentPrefix}pclear @rol\` - Configura rol para clear`
             ].join('\n'),
             inline: false
         });

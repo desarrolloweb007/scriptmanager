@@ -68,5 +68,64 @@ module.exports = {
 
         await interaction.reply({ embeds: [embed] });
         console.log(`[WARN] ${moderator.tag} advirtió a ${user.tag} en ${interaction.guild.name}: ${reason}`);
+    },
+
+    // Comando legacy con prefijo dinámico
+    legacy: true,
+    async executeLegacy(message, args) {
+        if (!message.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ No tienes permisos para advertir usuarios.')]
+            });
+        }
+
+        if (args.length < 2) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Uso correcto: `[prefijo]warn @usuario razón`')]
+            });
+        }
+
+        const user = message.mentions.users.first();
+        if (!user) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Debes mencionar a un usuario válido.')]
+            });
+        }
+
+        const reason = args.slice(1).join(' ');
+        const moderator = message.author;
+        const guildId = message.guild.id;
+
+        // Registrar advertencia
+        const warnings = loadWarnings();
+        if (!warnings[guildId]) warnings[guildId] = {};
+        if (!warnings[guildId][user.id]) warnings[guildId][user.id] = [];
+        warnings[guildId][user.id].push({
+            reason,
+            date: new Date().toISOString(),
+            moderator: moderator.id
+        });
+        saveWarnings(warnings);
+
+        // Embed de confirmación
+        const embed = new EmbedBuilder()
+            .setColor('Yellow')
+            .setTitle('⚠️ Usuario advertido')
+            .addFields(
+                { name: 'Usuario', value: `<@${user.id}>`, inline: true },
+                { name: 'Moderador', value: `<@${moderator.id}>`, inline: true },
+                { name: 'Razón', value: reason, inline: false },
+                { name: 'Total de advertencias', value: warnings[guildId][user.id].length.toString(), inline: true }
+            )
+            .setTimestamp();
+
+        await message.reply({ embeds: [embed] });
+        console.log(`[WARN] ${moderator.tag} advirtió a ${user.tag} en ${message.guild.name}: ${reason}`);
     }
 }; 

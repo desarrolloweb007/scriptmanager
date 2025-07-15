@@ -78,5 +78,79 @@ module.exports = {
                 console.log(`[UNBAN] ${user.tag} fue desbaneado automáticamente en ${interaction.guild.name}`);
             }, duration);
         }
+    },
+
+    // Comando legacy con prefijo dinámico
+    legacy: true,
+    async executeLegacy(message, args) {
+        if (!message.member.permissions.has(PermissionFlagsBits.BanMembers)) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ No tienes permisos para banear usuarios.')]
+            });
+        }
+
+        if (args.length < 3) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Uso correcto: `[prefijo]ban @usuario razón duración`')]
+            });
+        }
+
+        const user = message.mentions.users.first();
+        if (!user) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Debes mencionar a un usuario válido.')]
+            });
+        }
+
+        const member = await message.guild.members.fetch(user.id).catch(() => null);
+        const reason = args.slice(1, -1).join(' ');
+        const durationStr = args[args.length - 1];
+        const moderator = message.author;
+
+        if (!member) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Orange')
+                    .setDescription('⚠️ El usuario no está en el servidor.')]
+            });
+        }
+
+        if (!member.bannable) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ No puedo banear a este usuario (jerarquía o permisos insuficientes).')]
+            });
+        }
+
+        const duration = parseDuration(durationStr);
+        await member.ban({ reason });
+
+        const embed = new EmbedBuilder()
+            .setColor('Red')
+            .setTitle('⛔ Usuario baneado')
+            .addFields(
+                { name: 'Usuario', value: `<@${user.id}>`, inline: true },
+                { name: 'Moderador', value: `<@${moderator.id}>`, inline: true },
+                { name: 'Razón', value: reason, inline: false },
+                { name: 'Duración', value: duration ? durationStr : 'Permanente', inline: true }
+            )
+            .setTimestamp();
+
+        await message.reply({ embeds: [embed] });
+        console.log(`[BAN] ${moderator.tag} baneó a ${user.tag} en ${message.guild.name} por ${duration ? durationStr : 'permanente'}: ${reason}`);
+
+        if (duration) {
+            setTimeout(async () => {
+                await message.guild.members.unban(user.id, 'Ban temporal finalizado').catch(() => {});
+                console.log(`[UNBAN] ${user.tag} fue desbaneado automáticamente en ${message.guild.name}`);
+            }, duration);
+        }
     }
 }; 

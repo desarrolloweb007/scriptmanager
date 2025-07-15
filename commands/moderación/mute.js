@@ -98,5 +98,80 @@ module.exports = {
                 console.log(`[UNMUTE] ${user.tag} fue desmuteado automáticamente en ${interaction.guild.name}`);
             }
         }, duration);
+    },
+
+    // Comando legacy con prefijo dinámico
+    legacy: true,
+    async executeLegacy(message, args) {
+        if (!message.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ No tienes permisos para mutear usuarios.')]
+            });
+        }
+
+        if (args.length < 3) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Uso correcto: `[prefijo]mute @usuario duración razón`')]
+            });
+        }
+
+        const user = message.mentions.users.first();
+        if (!user) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Debes mencionar a un usuario válido.')]
+            });
+        }
+
+        const member = await message.guild.members.fetch(user.id);
+        const durationStr = args[1];
+        const reason = args.slice(2).join(' ');
+        const moderator = message.author;
+
+        const duration = parseDuration(durationStr);
+        if (!duration || duration < 1000) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Red')
+                    .setDescription('❌ Duración inválida. Usa el formato: 1d 2h 3m 4s')]
+            });
+        }
+
+        const mutedRole = await getOrCreateMutedRole(message.guild);
+        if (member.roles.cache.has(mutedRole.id)) {
+            return await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('Orange')
+                    .setDescription('⚠️ El usuario ya está muteado.')]
+            });
+        }
+
+        await member.roles.add(mutedRole, reason);
+
+        const embed = new EmbedBuilder()
+            .setColor('Grey')
+            .setTitle('🔇 Usuario muteado')
+            .addFields(
+                { name: 'Usuario', value: `<@${user.id}>`, inline: true },
+                { name: 'Moderador', value: `<@${moderator.id}>`, inline: true },
+                { name: 'Razón', value: reason, inline: false },
+                { name: 'Duración', value: durationStr, inline: true }
+            )
+            .setTimestamp();
+
+        await message.reply({ embeds: [embed] });
+        console.log(`[MUTE] ${moderator.tag} muteó a ${user.tag} en ${message.guild.name} por ${durationStr}: ${reason}`);
+
+        setTimeout(async () => {
+            if (member.roles.cache.has(mutedRole.id)) {
+                await member.roles.remove(mutedRole, 'Mute automático finalizado');
+                console.log(`[UNMUTE] ${user.tag} fue desmuteado automáticamente en ${message.guild.name}`);
+            }
+        }, duration);
     }
 }; 
