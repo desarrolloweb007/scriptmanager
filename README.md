@@ -56,9 +56,6 @@ CLIENT_ID=tu_client_id_aqui
 
 # ID del servidor (opcional, para desarrollo)
 GUILD_ID=tu_guild_id_aqui
-
-# ID del canal de logs (opcional)
-LOG_CHANNEL_ID=tu_canal_logs_aqui
 ```
 
 ### 4. Registrar comandos slash
@@ -136,7 +133,39 @@ npm start
 3. Selecciona los permisos necesarios
 4. Copia la URL generada y úsala para invitar el bot
 
-## 🚀 Despliegue en Railway
+## 🚀 Despliegue en Render
+
+### 1. Preparar el proyecto
+
+El proyecto está configurado para Render con variables de entorno optimizadas.
+
+### 2. Conectar con Render
+
+1. Ve a [Render](https://render.com)
+2. Crea una nueva cuenta o inicia sesión
+3. Haz clic en "New +" y selecciona "Web Service"
+4. Conecta tu repositorio de GitHub
+
+### 3. Configurar el servicio
+
+- **Name**: `scriptmanager-bot` (o el nombre que prefieras)
+- **Environment**: `Node`
+- **Build Command**: `npm install`
+- **Start Command**: `npm start`
+
+### 4. Configurar variables de entorno
+
+En la sección "Environment Variables", agrega:
+
+- `DISCORD_TOKEN`: Token de tu bot de Discord
+- `CLIENT_ID`: ID de tu aplicación de Discord
+- `GUILD_ID`: (Opcional) ID del servidor para desarrollo
+
+### 5. Desplegar
+
+Render desplegará automáticamente tu bot y lo mantendrá actualizado con cada push.
+
+## 🚀 Despliegue en Railway (Alternativa)
 
 ### 1. Preparar el proyecto
 
