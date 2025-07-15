@@ -4,9 +4,7 @@
   "description": "Bot de Discord para gestión de roles con comandos interactivos",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "postinstall": "node deploy-commands.js"
+    "start": "node index.js"
   },
   "keywords": ["discord", "bot", "roles", "discord.js"],
   "author": "Tu Nombre",
@@ -14,9 +12,6 @@
   "dependencies": {
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
   },
   "engines": {
     "node": ">=16.0.0"
