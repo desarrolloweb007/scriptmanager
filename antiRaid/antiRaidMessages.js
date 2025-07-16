@@ -1,0 +1,54 @@
+// antiRaidMessages.js
+// Mensajes multi-idioma para el sistema anti-raid
+module.exports = {
+  es: {
+    raid_detected: '🚨 Posible raid detectado: {count} usuarios en {seconds}s.',
+    ban_success: '🔨 Usuario baneado automáticamente por {reason}.',
+    user_banned_global: '🚫 Usuario <@{id}> baneado por estar en la global banlist.',
+    bot_banned_global: '🚫 Bot <@{id}> baneado por estar en la global banlist.',
+    spam_mentions: '⚠️ Spam de menciones detectado: <@{id}>',
+    spam_emojis: '⚠️ Spam de emojis detectado: <@{id}> usó {count} emojis personalizados.',
+    flood_detected: '⚠️ Anti-flood: <@{id}> envió {count} mensajes en {window}s.',
+    link_suspicious: '⚠️ Mensaje con link sospechoso eliminado de <@{id}>',
+    mass_delete: '⚠️ Eliminación masiva de mensajes detectada: <@{id}> eliminó {count} mensajes en 10s.',
+    webhook_created: '⚠️ Webhook sospechoso creado en <#{channel}> por <@{id}>.',
+    panic_on: '🚨 Modo pánico activado: todos los canales bloqueados temporalmente.',
+    panic_off: '✅ Modo pánico desactivado: permisos restaurados.',
+    maintenance_on: '🛠️ Modo mantenimiento activado. El anti-raid estará desactivado durante {minutes} minutos.',
+    maintenance_off: '✅ Modo mantenimiento desactivado. El anti-raid ha sido reactivado.',
+    whitelist_temp_added: '✅ Usuario/rol añadido a la whitelist temporal.',
+    whitelist_temp_removed: '✅ Usuario/rol eliminado de la whitelist temporal.',
+    export_success: '📦 Configuración exportada.',
+    import_success: '✅ Configuración importada correctamente.',
+    import_error: '❌ Error al importar la configuración.',
+    version_update: '🆕 El sistema anti-raid ha sido actualizado a la versión {version}. Consulta /antiraid ayuda para ver las novedades.',
+    weekly_summary_title: '🛡️ Resumen Semanal Anti-Raid',
+    weekly_summary_desc: 'Estadísticas y eventos destacados de la última semana.'
+    // ...otros mensajes clave
+  },
+  en: {
+    raid_detected: '🚨 Possible raid detected: {count} users in {seconds}s.',
+    ban_success: '🔨 User automatically banned for {reason}.',
+    user_banned_global: '🚫 User <@{id}> banned for being in the global banlist.',
+    bot_banned_global: '🚫 Bot <@{id}> banned for being in the global banlist.',
+    spam_mentions: '⚠️ Mention spam detected: <@{id}>',
+    spam_emojis: '⚠️ Emoji spam detected: <@{id}> used {count} custom emojis.',
+    flood_detected: '⚠️ Anti-flood: <@{id}> sent {count} messages in {window}s.',
+    link_suspicious: '⚠️ Suspicious link message deleted from <@{id}>',
+    mass_delete: '⚠️ Mass message deletion detected: <@{id}> deleted {count} messages in 10s.',
+    webhook_created: '⚠️ Suspicious webhook created in <#{channel}> by <@{id}>.',
+    panic_on: '🚨 Panic mode activated: all channels temporarily locked.',
+    panic_off: '✅ Panic mode deactivated: permissions restored.',
+    maintenance_on: '🛠️ Maintenance mode activated. Anti-raid will be disabled for {minutes} minutes.',
+    maintenance_off: '✅ Maintenance mode deactivated. Anti-raid has been re-enabled.',
+    whitelist_temp_added: '✅ User/role added to temporary whitelist.',
+    whitelist_temp_removed: '✅ User/role removed from temporary whitelist.',
+    export_success: '📦 Configuration exported.',
+    import_success: '✅ Configuration imported successfully.',
+    import_error: '❌ Error importing configuration.',
+    version_update: '🆕 Anti-raid system updated to version {version}. See /antiraid ayuda for details.',
+    weekly_summary_title: '🛡️ Weekly Anti-Raid Summary',
+    weekly_summary_desc: 'Statistics and highlights from the last week.'
+    // ...other key messages
+  }
+}; 
