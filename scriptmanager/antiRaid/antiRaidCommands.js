@@ -562,8 +562,9 @@ ${lang === 'es' ? 'Usuarios blacklist:' : 'Blacklist users:'} ${config.blacklist
     return interaction.reply('❌ Comando o subcomando no reconocido. Usa `/antiraid help` para ver las opciones.');
 }
 
+// --- Exportaciones principales para legacy y slash ---
 module.exports = {
-    antiRaidCommands,
-    handleAntiRaidCommand,
-    hasAntiRaidPerms
+    antiRaidCommands, // Array de SlashCommandBuilder para registro
+    handleAntiRaidCommand, // Handler principal para slash y legacy
+    hasAntiRaidPerms // Utilidad de permisos
 }; 
