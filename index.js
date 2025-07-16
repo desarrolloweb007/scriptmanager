@@ -53,6 +53,8 @@ loadCommands(path.join(__dirname, 'commands'));
 client.once(Events.ClientReady, () => {
     console.log(`✅ Bot conectado como ${client.user.tag}`);
     console.log(`🛠️  Bot listo para gestionar roles en ${client.guilds.cache.size} servidores`);
+    // Presencia personalizada
+    client.user.setActivity('👨‍💻 Ayudando a los servidores', { type: 0 }); // 0 = PLAYING
 });
 
 client.on(Events.InteractionCreate, async interaction => {

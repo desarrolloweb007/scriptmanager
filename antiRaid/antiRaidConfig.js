@@ -3,10 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const CONFIG_PATH = path.join(__dirname, '../data/antiRaidConfig.json');
 const DATA_DIR = path.join(__dirname, '../data');
 if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+const CONFIG_PATH = path.join(DATA_DIR, 'antiRaidConfig.json');
+if (!fs.existsSync(CONFIG_PATH)) {
+    fs.writeFileSync(CONFIG_PATH, '{}');
 }
 
 // --- Configuración por defecto ---
@@ -36,7 +39,6 @@ function defaultConfig() {
     };
 }
 
-// --- Leer configuración desde archivo ---
 function readConfigFile() {
     try {
         if (!fs.existsSync(CONFIG_PATH)) return {};
@@ -48,7 +50,6 @@ function readConfigFile() {
     }
 }
 
-// --- Guardar configuración en archivo ---
 function writeConfigFile(config) {
     try {
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
@@ -57,7 +58,6 @@ function writeConfigFile(config) {
     }
 }
 
-// --- Obtener configuración de un servidor ---
 function getGuildConfig(guildId) {
     const all = readConfigFile();
     if (!all[guildId]) {
@@ -67,7 +67,6 @@ function getGuildConfig(guildId) {
     return all[guildId];
 }
 
-// --- Actualizar configuración de un servidor ---
 function updateGuildConfig(guildId, update) {
     const all = readConfigFile();
     if (!all[guildId]) all[guildId] = defaultConfig();
