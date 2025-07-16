@@ -138,7 +138,6 @@ module.exports = {
                 .setTimestamp();
             return message.reply({ embeds: [embed], flags: 64 });
         }
-    }
         } catch (error) {
             console.error(`Error en comando ${fileName}:`, error);
             const { EmbedBuilder } = require("discord.js");
@@ -149,4 +148,5 @@ module.exports = {
                 .setTimestamp();
             return message.reply({ embeds: [embed], flags: 64 });
         }
+    }
 };
