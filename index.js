@@ -3,6 +3,12 @@ const { Client, GatewayIntentBits, Collection, Events, PermissionFlagsBits } = r
 const fs = require('fs');
 const path = require('path');
 
+// --- INTEGRACIÓN SISTEMA ANTI-RAID ---
+const AntiRaidManager = require('./antiRaid/antiRaidManager');
+const { antiRaidCommands, handleAntiRaidCommand } = require('./antiRaid/antiRaidCommands');
+
+const antiRaidManager = new AntiRaidManager(client);
+
 // Crear cliente con intents necesarios
 const client = new Client({
     intents: [
@@ -57,6 +63,11 @@ client.once(Events.ClientReady, () => {
 
 // Manejo de comandos e interacciones
 client.on(Events.InteractionCreate, async interaction => {
+    // --- Manejo de comandos anti-raid ---
+    if (interaction.isChatInputCommand() && interaction.commandName === 'antiraid') {
+        await handleAntiRaidCommand(interaction);
+        return;
+    }
     // Manejo de comandos slash
     if (interaction.isChatInputCommand()) {
         const command = client.commands.get(interaction.commandName);
