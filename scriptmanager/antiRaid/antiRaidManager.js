@@ -6,11 +6,6 @@ const ANTI_RAID_VERSION = '1.0.0'; // Actualiza este valor en cada release
 const messages = require('./antiRaidMessages');
 const { createEmbed, getMsg } = require('../../utils/embedUtils');
 
-function getMsg(lang, key, vars = {}) {
-    const msg = (messages[lang] && messages[lang][key]) || messages['es'][key] || key;
-    return Object.entries(vars).reduce((str, [k, v]) => str.replace(new RegExp(`{${k}}`, 'g'), v), msg);
-}
-
 class AntiRaidManager {
     // --- Bienvenida/documentación automática para nuevos administradores ---
     setupAdminWelcome() {
