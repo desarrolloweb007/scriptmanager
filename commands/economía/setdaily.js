@@ -17,11 +17,10 @@ module.exports = {
         await interaction.reply({ 
             content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
             ephemeral: true 
-        });
+        },);
     },
 
     async executeLegacy(message, args) {
-        try {
         try {
         // Verificar prefijo dinámico
         // Verificación de prefijo manejada por el middleware
@@ -78,4 +77,14 @@ module.exports = {
             .setTimestamp();
         return message.reply({ embeds: [embed], flags: 64 });
     }
-}; 
+        } catch (error) {
+            console.error(`Error en comando ${fileName}:`, error);
+            const { EmbedBuilder } = require("discord.js");
+            const embed = new EmbedBuilder()
+                .setColor("#ff0000")
+                .setTitle("❌ Error")
+                .setDescription("Hubo un error al ejecutar este comando.")
+                .setTimestamp();
+            return message.reply({ embeds: [embed], flags: 64 });
+        }
+};

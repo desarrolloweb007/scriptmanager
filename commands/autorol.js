@@ -105,10 +105,9 @@ module.exports = {
     legacy: true,
     async executeLegacy(message, args) {
         try {
-        try {
-        // Verificar prefijo dinámico
-        const prefixManager = require('../utils/prefixManager');
-        const currentPrefix = prefixManager.getPrefix(message.guild.id);
+            // Verificar prefijo dinámico
+            const prefixManager = require('../utils/prefixManager');
+            const currentPrefix = prefixManager.getPrefix(message.guild.id);
         
         if (!message.content.startsWith(currentPrefix + 'autorol')) {
             return;
@@ -211,5 +210,9 @@ module.exports = {
             embeds: [embed],
             components: buttons
         });
+        } catch (error) {
+            console.error('Error en autorol legacy:', error);
+            await message.reply('❌ Ha ocurrido un error al procesar el comando.');
+        }
     }
 }; 

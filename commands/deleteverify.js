@@ -18,10 +18,9 @@ module.exports = {
     
     async executeLegacy(message, args) {
         try {
-        try {
-        // Verificar prefijo dinámico
-        const prefixManager = require('../utils/prefixManager');
-        const currentPrefix = prefixManager.getPrefix(message.guild.id);
+            // Verificar prefijo dinámico
+            const prefixManager = require('../utils/prefixManager');
+            const currentPrefix = prefixManager.getPrefix(message.guild.id);
         
         if (!message.content.startsWith(currentPrefix + 'deleteverify')) {
             return;
@@ -161,6 +160,15 @@ module.exports = {
                 .setDescription('Ocurrió un error al eliminar el mensaje de verificación.')
                 .setTimestamp();
             
+            message.reply({ embeds: [embed] });
+        }
+        } catch (error) {
+            console.error('Error en deleteverify legacy:', error);
+            const embed = new EmbedBuilder()
+                .setColor('#ff0000')
+                .setTitle('❌ Error del Sistema')
+                .setDescription('Ha ocurrido un error al procesar el comando.')
+                .setTimestamp();
             message.reply({ embeds: [embed] });
         }
     }
