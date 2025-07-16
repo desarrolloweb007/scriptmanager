@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const { getShopItems, getUserBalance, removeUserBalance, addToInventory, getUserInventory, getCurrencyName, getUserInventory: getInventory } = require('../../utils/economyUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
 
@@ -6,13 +6,21 @@ module.exports = {
     name: 'buy',
     description: 'Compra un objeto de la tienda',
     legacy: true,
-    data: { name: 'buy' },
+    data: new SlashCommandBuilder()
+        .setName('buy')
+        .setDescription('Comando buy'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'buy'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Obtener argumentos
         const commandArgs = await getArgs(message, 'buy');

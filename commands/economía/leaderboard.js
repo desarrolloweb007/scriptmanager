@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { readJsonFile, getCurrencyName } = require('../../utils/economyUtils');
 const { hasPrefix, getCurrentPrefix } = require('../../utils/prefixUtils');
 const path = require('path');
@@ -7,13 +7,21 @@ module.exports = {
     name: 'leaderboard',
     description: 'Muestra el ranking de los 10 usuarios con más saldo en el servidor',
     legacy: true,
-    data: { name: 'leaderboard' },
+    data: new SlashCommandBuilder()
+        .setName('leaderboard')
+        .setDescription('Comando leaderboard'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'leaderboard'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         const guildId = message.guild.id;
         const currentPrefix = await getCurrentPrefix(guildId);

@@ -72,6 +72,8 @@ module.exports = {
     // Comando legacy con prefijo !
     legacy: true,
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar permisos del usuario
         if (!message.member.permissions.has(PermissionFlagsBits.ManageRoles)) {
             return await message.reply('❌ No tienes permisos para gestionar roles.');

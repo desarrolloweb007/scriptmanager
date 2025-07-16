@@ -15,7 +15,8 @@ const FIXES = {
             /const prefix = await getPrefix\(message\.guild\.id\);\s*if \(!message\.content\.startsWith\(prefix \+ '[^']+'\)\) return;/g,
             /if \(!\(await hasPrefix\(message, '[^']+'\)\)\) \{\s*return;\s*\}/g
         ],
-        replacement: '// Verificación de prefijo manejada por el middleware'
+        replacement: '// Verificación de prefijo manejada por el middleware',
+        description: 'Eliminar verificación de prefijo duplicada'
     },
     
     // Agregar versión slash básica
@@ -31,14 +32,16 @@ const FIXES = {
             ephemeral: true 
         });
     },`;
-        }
+        },
+        description: 'Agregar versión slash básica'
     },
     
     // Agregar manejo de errores básico
     ADD_ERROR_HANDLING: {
         pattern: /async executeLegacy\(message, args\) \{/g,
         replacement: `async executeLegacy(message, args) {
-        try {`
+        try {`,
+        description: 'Agregar manejo de errores básico'
     },
     
     // Agregar catch al final de executeLegacy
@@ -54,7 +57,8 @@ const FIXES = {
             });
         }
     }`;
-        }
+        },
+        description: 'Agregar bloque catch'
     },
     
     // Agregar imports necesarios
@@ -63,7 +67,8 @@ const FIXES = {
         replacement: (match, imports) => {
             const newImports = imports.includes('SlashCommandBuilder') ? imports : imports + ', SlashCommandBuilder';
             return `const { ${newImports} } = require('discord.js');`;
-        }
+        },
+        description: 'Agregar imports necesarios'
     }
 };
 
@@ -71,15 +76,17 @@ function fixCommandFile(filePath) {
     try {
         let content = fs.readFileSync(filePath, 'utf8');
         let fixed = false;
+        const fixesApplied = [];
         
         // Aplicar todas las correcciones
-        Object.values(FIXES).forEach(fix => {
+        Object.entries(FIXES).forEach(([fixName, fix]) => {
             if (fix.patterns) {
                 // Múltiples patrones
-                fix.patterns.forEach(pattern => {
+                fix.patterns.forEach((pattern, index) => {
                     if (content.match(pattern)) {
                         content = content.replace(pattern, fix.replacement);
                         fixed = true;
+                        fixesApplied.push(`${fix.description} (patrón ${index + 1})`);
                     }
                 });
             } else if (fix.pattern) {
@@ -91,6 +98,7 @@ function fixCommandFile(filePath) {
                         content = content.replace(fix.pattern, fix.replacement);
                     }
                     fixed = true;
+                    fixesApplied.push(fix.description);
                 }
             }
         });
@@ -136,18 +144,19 @@ function fixCommandFile(filePath) {
                 lines.splice(endIndex, 0, catchBlock);
                 content = lines.join('\n');
                 fixed = true;
+                fixesApplied.push('Agregar manejo de errores completo');
             }
         }
         
         if (fixed) {
             fs.writeFileSync(filePath, content);
-            return true;
+            return { fixed: true, fixesApplied };
         }
         
-        return false;
+        return { fixed: false, fixesApplied: [] };
     } catch (error) {
         console.error(`Error al arreglar ${filePath}:`, error.message);
-        return false;
+        return { fixed: false, error: error.message };
     }
 }
 
@@ -157,7 +166,8 @@ function scanAndFixAllCommands() {
         fixed: [],
         errors: [],
         total: 0,
-        categories: {}
+        categories: {},
+        details: []
     };
     
     function scanDirectory(dir) {
@@ -177,8 +187,14 @@ function scanAndFixAllCommands() {
                 const category = path.dirname(fullPath).split(path.sep).pop();
                 
                 try {
-                    if (fixCommandFile(fullPath)) {
+                    const fixResult = fixCommandFile(fullPath);
+                    if (fixResult.fixed) {
                         results.fixed.push(path.basename(fullPath));
+                        results.details.push({
+                            file: path.basename(fullPath),
+                            category: category,
+                            fixes: fixResult.fixesApplied
+                        });
                         if (results.categories[category]) {
                             results.categories[category].fixed.push(path.basename(fullPath));
                         }
@@ -214,10 +230,13 @@ console.log(`• Comandos procesados: ${results.total}`);
 console.log(`• Comandos arreglados: ${results.fixed.length}`);
 console.log(`• Errores encontrados: ${results.errors.length}`);
 
-if (results.fixed.length > 0) {
-    console.log('\n✅ Comandos arreglados:');
-    results.fixed.forEach(file => {
-        console.log(`   • ${file}`);
+if (results.details.length > 0) {
+    console.log('\n✅ Comandos arreglados con detalles:');
+    results.details.forEach(detail => {
+        console.log(`\n   📄 ${detail.file} (${detail.category}):`);
+        detail.fixes.forEach(fix => {
+            console.log(`      ✅ ${fix}`);
+        });
     });
 }
 

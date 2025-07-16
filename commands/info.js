@@ -77,6 +77,8 @@ module.exports = {
     // Comando legacy con prefijo dinámico
     legacy: true,
     async executeLegacy(message, args) {
+        try {
+        try {
         const embed = new EmbedBuilder()
             .setColor('#7289da')
             .setTitle('🤖 **ScriptManager Bot**')

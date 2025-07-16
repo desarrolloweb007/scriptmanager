@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
@@ -10,13 +10,21 @@ module.exports = {
     name: 'permseconomy',
     description: 'Configura los permisos de economía por rol y comando',
     legacy: true,
-    data: { name: 'permseconomy' },
+    data: new SlashCommandBuilder()
+        .setName('permseconomy')
+        .setDescription('Comando permseconomy'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'permseconomy'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Solo administradores pueden configurar
         if (!message.member.permissions.has('Administrator')) {

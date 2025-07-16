@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const { getCurrencyName, setCurrencyName } = require('../../utils/economyUtils');
 const { checkShopPermission } = require('../../utils/permissionsUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
@@ -7,13 +7,21 @@ module.exports = {
     name: 'econconfig',
     description: 'Configura el nombre de la moneda del servidor',
     legacy: true,
-    data: { name: 'econconfig' },
+    data: new SlashCommandBuilder()
+        .setName('econconfig')
+        .setDescription('Comando econconfig'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'econconfig'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Verificar permisos de administración de tienda
         const hasPermission = await checkShopPermission(message.member);

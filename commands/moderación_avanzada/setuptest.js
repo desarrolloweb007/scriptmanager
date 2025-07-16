@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -6,16 +6,21 @@ module.exports = {
     name: 'setuptest',
     description: 'Configura una palabra de prueba para el filtro',
     legacy: true,
-    data: { name: 'setuptest' },
+    data: new SlashCommandBuilder()
+        .setName('setuptest')
+        .setDescription('Comando setuptest'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        const prefixManager = require('../../utils/prefixManager');
-        const currentPrefix = prefixManager.getPrefix(message.guild.id);
-        
-        if (!message.content.startsWith(currentPrefix + 'setuptest')) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         try {
             // Cargar configuración actual

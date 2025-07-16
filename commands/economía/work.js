@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 const { checkShopPermission } = require('../../utils/permissionsUtils');
@@ -14,13 +14,21 @@ module.exports = {
     name: 'work',
     description: 'Trabaja y gana monedas o agrega trabajos personalizados',
     legacy: true,
-    data: { name: 'work' },
+    data: new SlashCommandBuilder()
+        .setName('work')
+        .setDescription('Comando work'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'work'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Si es subcomando add, delegar a lógica de agregar trabajo
         const commandArgs = await getArgs(message, 'work');

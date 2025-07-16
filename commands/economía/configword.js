@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 const { checkShopPermission } = require('../../utils/permissionsUtils');
@@ -10,13 +10,21 @@ module.exports = {
     name: 'configword',
     description: 'Agrega trabajos personalizados para el comando work',
     legacy: true,
-    data: { name: 'configword' },
+    data: new SlashCommandBuilder()
+        .setName('configword')
+        .setDescription('Comando configword'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'configword'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Verificar permisos de administración de tienda
         const hasPermission = await checkShopPermission(message.member);

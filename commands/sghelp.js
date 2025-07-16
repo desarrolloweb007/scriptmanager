@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const prefixManager = require('../utils/prefixManager');
 
-// Utilidad para agrupar comandos por categoría y mostrar ejemplos
+// Utilidad para agrupar comandos por categoría
 function getCommandsByCategory(currentPrefix = '!') {
     return {
         '🛡️ Sistema Anti-Raid': [
@@ -85,6 +85,7 @@ function getCommandsByCategory(currentPrefix = '!') {
         ],
         '⚙️ Utilidad y Configuración': [
             `\`${currentPrefix}help\` - Muestra esta lista de comandos`,
+            `\`${currentPrefix}sghelp\` - Comando alternativo de ayuda`,
             `\`${currentPrefix}prefix\` - Muestra el prefijo actual`,
             `\`${currentPrefix}setprefix nuevo\` - Cambia el prefijo del servidor`,
             `\`${currentPrefix}resetprefix\` - Resetea el prefijo al valor por defecto`,
@@ -96,8 +97,8 @@ function getCommandsByCategory(currentPrefix = '!') {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('help')
-        .setDescription('Muestra todos los comandos y funcionalidades del bot')
+        .setName('sghelp')
+        .setDescription('Muestra todos los comandos del bot usando el prefijo configurado')
         .addStringOption(option =>
             option.setName('categoria')
                 .setDescription('Categoría específica de comandos')
@@ -127,9 +128,9 @@ module.exports = {
             
             if (categoryKey) {
                 const embed = new EmbedBuilder()
-                    .setColor('#7289da')
-                    .setTitle(categoryKey)
-                    .setDescription('Comandos disponibles en esta categoría:')
+                    .setColor('#00ff00')
+                    .setTitle(`📚 ${categoryKey}`)
+                    .setDescription(`Comandos disponibles en esta categoría usando el prefijo \`${currentPrefix}\`:`)
                     .addFields(
                         commandsByCategory[categoryKey].map(cmd => ({
                             name: '📋',
@@ -137,67 +138,66 @@ module.exports = {
                             inline: false
                         }))
                     )
-                    .setFooter({ text: `Prefijo actual: ${currentPrefix}` })
+                    .setFooter({ text: `Prefijo configurado: ${currentPrefix} • ScriptManager Bot` })
                     .setTimestamp();
                 
                 await interaction.reply({ embeds: [embed] });
             } else {
                 await interaction.reply({ 
-                    content: '❌ Categoría no encontrada. Usa `/help` para ver todas las categorías.', 
+                    content: '❌ Categoría no encontrada. Usa `/sghelp` para ver todas las categorías.', 
                     ephemeral: true 
                 });
             }
         } else {
             // Mostrar todas las categorías
             const embed = new EmbedBuilder()
-                .setColor('#7289da')
-                .setTitle('🤖 **ScriptManager Bot - Comandos y Funcionalidades**')
-                .setDescription('Un bot especializado en gestión, automatización y administración de servidores Discord.')
+                .setColor('#00ff00')
+                .setTitle('🤖 **ScriptManager Bot - Comandos Completos**')
+                .setDescription(`Todos los comandos disponibles organizados por categorías.\n**Prefijo configurado:** \`${currentPrefix}\``)
                 .setThumbnail(interaction.client.user.displayAvatarURL({ dynamic: true }))
                 .addFields(
                     { 
-                        name: '📋 Información General', 
+                        name: '📊 Estadísticas del Bot', 
                         value: [
                             '**Nombre:** ScriptManager',
                             '**Versión:** v1.0',
                             '**Creador:** TheAprilGamer',
-                            '**Lenguaje:** Node.js',
-                            '**Framework:** Discord.js v14',
                             `**Prefijo actual:** ${currentPrefix}`,
                             `**Servidores:** ${interaction.client.guilds.cache.size}`,
-                            `**Comandos:** ${interaction.client.commands.size}`
+                            `**Comandos totales:** ${interaction.client.commands.size}`,
+                            `**Categorías:** ${Object.keys(commandsByCategory).length}`
                         ].join('\n'),
                         inline: false 
                     },
                     { 
-                        name: '🎭 Funcionalidades Principales', 
+                        name: '🎯 Funcionalidades Principales', 
                         value: [
-                            '• Sistema anti-raid avanzado con detección automática',
-                            '• Gestión completa de roles y permisos',
-                            '• Sistema de moderación con advertencias automáticas',
-                            '• Sistema de verificación con reacciones',
-                            '• Sistema de tickets personalizable',
-                            '• Sistema de economía con tienda y trabajos',
-                            '• Comandos slash y legacy con prefijos dinámicos',
-                            '• Protección contra spam y raids',
-                            '• Sistema de bloqueo de comandos por roles'
+                            '• **Sistema Anti-Raid:** Protección avanzada contra raids',
+                            '• **Gestión de Roles:** Asignación y gestión completa',
+                            '• **Moderación:** Sistema completo de moderación',
+                            '• **Verificación:** Sistema de verificación con reacciones',
+                            '• **Tickets:** Sistema de tickets personalizable',
+                            '• **Economía:** Sistema completo con tienda y trabajos',
+                            '• **Bloqueo:** Control de comandos por roles',
+                            '• **Prefijos Dinámicos:** Cada servidor puede configurar su prefijo'
                         ].join('\n'),
                         inline: false 
                     }
                 );
 
-            // Agregar categorías de comandos
+            // Agregar categorías de comandos con contadores
             Object.entries(commandsByCategory).forEach(([category, commands]) => {
                 const commandCount = commands.length;
+                const categoryName = category.replace(/[^a-zA-Z]/g, '').toLowerCase();
                 embed.addFields({
                     name: category,
-                    value: `${commandCount} comandos disponibles\nUsa \`/help ${category.toLowerCase().replace(/[^a-z]/g, '')}\` para ver detalles`,
+                    value: `${commandCount} comandos disponibles\nUsa \`/sghelp ${categoryName}\` para ver detalles`,
                     inline: true
                 });
             });
 
             embed.addFields({
-                name: '🔗 Comandos Especiales',
+                name: '🔗 Tipos de Comandos',
                 value: [
                     '• **Comandos Slash:** Usa `/` para comandos interactivos',
                     '• **Comandos Legacy:** Usa el prefijo para comandos tradicionales',
@@ -216,8 +216,19 @@ module.exports = {
                 inline: false
             });
 
+            embed.addFields({
+                name: '💡 Comandos de Ayuda',
+                value: [
+                    '• `/help` - Comando de ayuda estándar',
+                    '• `/sghelp` - Este comando (ayuda alternativa)',
+                    '• `!help` - Comando legacy de ayuda',
+                    '• `!sghelp` - Comando legacy alternativo'
+                ].join('\n'),
+                inline: false
+            });
+
             embed.setFooter({ 
-                text: `ScriptManager Bot v1.0 • Prefijo: ${currentPrefix} • Usa /help <categoria> para más detalles`,
+                text: `ScriptManager Bot v1.0 • Prefijo: ${currentPrefix} • Usa /sghelp <categoria> para más detalles`,
                 iconURL: interaction.client.user.displayAvatarURL({ dynamic: true })
             });
 
@@ -241,9 +252,9 @@ module.exports = {
                 
                 if (categoryKey) {
                     const embed = new EmbedBuilder()
-                        .setColor('#7289da')
-                        .setTitle(categoryKey)
-                        .setDescription('Comandos disponibles en esta categoría:')
+                        .setColor('#00ff00')
+                        .setTitle(`📚 ${categoryKey}`)
+                        .setDescription(`Comandos disponibles en esta categoría usando el prefijo \`${currentPrefix}\`:`)
                         .addFields(
                             commandsByCategory[categoryKey].map(cmd => ({
                                 name: '📋',
@@ -251,64 +262,63 @@ module.exports = {
                                 inline: false
                             }))
                         )
-                        .setFooter({ text: `Prefijo actual: ${currentPrefix}` })
+                        .setFooter({ text: `Prefijo configurado: ${currentPrefix} • ScriptManager Bot` })
                         .setTimestamp();
                     
                     await message.reply({ embeds: [embed] });
                 } else {
-                    await message.reply('❌ Categoría no encontrada. Usa `' + currentPrefix + 'help` para ver todas las categorías.');
+                    await message.reply('❌ Categoría no encontrada. Usa `' + currentPrefix + 'sghelp` para ver todas las categorías.');
                 }
             } else {
                 // Mostrar todas las categorías
                 const embed = new EmbedBuilder()
-                    .setColor('#7289da')
-                    .setTitle('🤖 **ScriptManager Bot - Comandos y Funcionalidades**')
-                    .setDescription('Un bot especializado en gestión, automatización y administración de servidores Discord.')
+                    .setColor('#00ff00')
+                    .setTitle('🤖 **ScriptManager Bot - Comandos Completos**')
+                    .setDescription(`Todos los comandos disponibles organizados por categorías.\n**Prefijo configurado:** \`${currentPrefix}\``)
                     .setThumbnail(message.client.user.displayAvatarURL({ dynamic: true }))
                     .addFields(
                         { 
-                            name: '📋 Información General', 
+                            name: '📊 Estadísticas del Bot', 
                             value: [
                                 '**Nombre:** ScriptManager',
                                 '**Versión:** v1.0',
                                 '**Creador:** TheAprilGamer',
-                                '**Lenguaje:** Node.js',
-                                '**Framework:** Discord.js v14',
                                 `**Prefijo actual:** ${currentPrefix}`,
                                 `**Servidores:** ${message.client.guilds.cache.size}`,
-                                `**Comandos:** ${message.client.commands.size}`
+                                `**Comandos totales:** ${message.client.commands.size}`,
+                                `**Categorías:** ${Object.keys(commandsByCategory).length}`
                             ].join('\n'),
                             inline: false 
                         },
                         { 
-                            name: '🎭 Funcionalidades Principales', 
+                            name: '🎯 Funcionalidades Principales', 
                             value: [
-                                '• Sistema anti-raid avanzado con detección automática',
-                                '• Gestión completa de roles y permisos',
-                                '• Sistema de moderación con advertencias automáticas',
-                                '• Sistema de verificación con reacciones',
-                                '• Sistema de tickets personalizable',
-                                '• Sistema de economía con tienda y trabajos',
-                                '• Comandos slash y legacy con prefijos dinámicos',
-                                '• Protección contra spam y raids',
-                                '• Sistema de bloqueo de comandos por roles'
+                                '• **Sistema Anti-Raid:** Protección avanzada contra raids',
+                                '• **Gestión de Roles:** Asignación y gestión completa',
+                                '• **Moderación:** Sistema completo de moderación',
+                                '• **Verificación:** Sistema de verificación con reacciones',
+                                '• **Tickets:** Sistema de tickets personalizable',
+                                '• **Economía:** Sistema completo con tienda y trabajos',
+                                '• **Bloqueo:** Control de comandos por roles',
+                                '• **Prefijos Dinámicos:** Cada servidor puede configurar su prefijo'
                             ].join('\n'),
                             inline: false 
                         }
                     );
 
-                // Agregar categorías de comandos
+                // Agregar categorías de comandos con contadores
                 Object.entries(commandsByCategory).forEach(([category, commands]) => {
                     const commandCount = commands.length;
+                    const categoryName = category.replace(/[^a-zA-Z]/g, '').toLowerCase();
                     embed.addFields({
                         name: category,
-                        value: `${commandCount} comandos disponibles\nUsa \`${currentPrefix}help ${category.toLowerCase().replace(/[^a-z]/g, '')}\` para ver detalles`,
+                        value: `${commandCount} comandos disponibles\nUsa \`${currentPrefix}sghelp ${categoryName}\` para ver detalles`,
                         inline: true
                     });
                 });
 
                 embed.addFields({
-                    name: '🔗 Comandos Especiales',
+                    name: '🔗 Tipos de Comandos',
                     value: [
                         '• **Comandos Slash:** Usa `/` para comandos interactivos',
                         '• **Comandos Legacy:** Usa el prefijo para comandos tradicionales',
@@ -327,15 +337,26 @@ module.exports = {
                     inline: false
                 });
 
+                embed.addFields({
+                    name: '💡 Comandos de Ayuda',
+                    value: [
+                        '• `/help` - Comando de ayuda estándar',
+                        '• `/sghelp` - Este comando (ayuda alternativa)',
+                        '• `!help` - Comando legacy de ayuda',
+                        '• `!sghelp` - Comando legacy alternativo'
+                    ].join('\n'),
+                    inline: false
+                });
+
                 embed.setFooter({ 
-                    text: `ScriptManager Bot v1.0 • Prefijo: ${currentPrefix} • Usa ${currentPrefix}help <categoria> para más detalles`,
+                    text: `ScriptManager Bot v1.0 • Prefijo: ${currentPrefix} • Usa ${currentPrefix}sghelp <categoria> para más detalles`,
                     iconURL: message.client.user.displayAvatarURL({ dynamic: true })
                 });
 
                 await message.reply({ embeds: [embed] });
             }
         } catch (error) {
-            console.error('Error en comando help:', error);
+            console.error('Error en comando sghelp:', error);
             await message.reply({
                 embeds: [new EmbedBuilder()
                     .setColor('#ff0000')

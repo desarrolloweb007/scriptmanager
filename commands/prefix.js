@@ -46,6 +46,8 @@ module.exports = {
     },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         const currentPrefix = prefixManager.getPrefix(message.guild.id);
         const isDefault = currentPrefix === prefixManager.DEFAULT_PREFIX;
         

@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const { setShopAdminRole, getShopAdminRole, validateRole } = require('../../utils/permissionsUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
 
@@ -6,13 +6,21 @@ module.exports = {
     name: 'ptienda',
     description: 'Configura el rol autorizado para administrar la tienda',
     legacy: true,
-    data: { name: 'ptienda' },
+    data: new SlashCommandBuilder()
+        .setName('ptienda')
+        .setDescription('Comando ptienda'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'ptienda'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Verificar permisos de administrador
         if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {

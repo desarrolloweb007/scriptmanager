@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { getUserBalance, removeUserBalance, addUserBalance, getCurrencyName } = require('../../utils/economyUtils');
 const { validateAmount } = require('../../utils/permissionsUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
@@ -7,13 +7,21 @@ module.exports = {
     name: 'pay',
     description: 'Transfiere monedas de un usuario a otro',
     legacy: true,
-    data: { name: 'pay' },
+    data: new SlashCommandBuilder()
+        .setName('pay')
+        .setDescription('Comando pay'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'pay'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Obtener argumentos
         const commandArgs = await getArgs(message, 'pay');

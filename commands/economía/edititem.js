@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { updateShopItem, getShopItems } = require('../../utils/economyUtils');
 const { checkShopPermission, validateRole, validatePrice, validateStock } = require('../../utils/permissionsUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
@@ -7,13 +7,21 @@ module.exports = {
     name: 'edititem',
     description: 'Modifica un campo del objeto existente en la tienda',
     legacy: true,
-    data: { name: 'edititem' },
+    data: new SlashCommandBuilder()
+        .setName('edititem')
+        .setDescription('Comando edititem'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'edititem'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Verificar permisos de administración de tienda
         const hasPermission = await checkShopPermission(message.member);

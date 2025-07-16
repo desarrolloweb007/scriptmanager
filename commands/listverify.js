@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -6,9 +6,19 @@ module.exports = {
     name: 'listverify',
     description: 'Lista los mensajes de verificación activos del servidor',
     legacy: true,
-    data: { name: 'listverify' },
+    data: new SlashCommandBuilder()
+        .setName('listverify')
+        .setDescription('Comando listverify'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
         const prefixManager = require('../utils/prefixManager');
         const currentPrefix = prefixManager.getPrefix(message.guild.id);

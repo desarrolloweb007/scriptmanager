@@ -53,6 +53,8 @@ module.exports = {
 
     async executeLegacy(message, args) {
         try {
+        try {
+        try {
             // Determinar usuario objetivo
             let target = message.mentions.users.first() || message.author;
             if (args.length > 0 && !message.mentions.users.first()) {

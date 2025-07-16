@@ -1,12 +1,22 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
     name: 'testcommands',
     description: 'Verifica que todos los comandos se cargan correctamente',
     legacy: true,
-    data: { name: 'testcommands' },
+    data: new SlashCommandBuilder()
+        .setName('testcommands')
+        .setDescription('Comando testcommands'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
         const prefixManager = require('../utils/prefixManager');
         const currentPrefix = prefixManager.getPrefix(message.guild.id);

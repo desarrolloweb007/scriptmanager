@@ -144,12 +144,123 @@ function hasAntiRaidPerms(member, guildId) {
 
 // --- Handler de interacción de comandos ---
 async function handleAntiRaidCommand(interaction) {
-    const guildId = interaction.guild.id;
-    const member = interaction.member;
-    const config = AntiRaidConfig.getGuildConfig(guildId);
-    // Permisos
-    if (!hasAntiRaidPerms(member, guildId)) {
-        return interaction.reply({ content: '❌ No tienes permisos para usar los comandos de configuración anti-raid.', ephemeral: true });
+    try {
+        const guildId = interaction.guild.id;
+        const member = interaction.member;
+        
+        if (!guildId) {
+            return await interaction.reply({ 
+                content: '❌ Error: No se pudo identificar el servidor.', 
+                ephemeral: true 
+            });
+        }
+        
+        const config = AntiRaidConfig.getGuildConfig(guildId);
+        
+        if (!hasAntiRaidPerms(member, guildId)) {
+            return await interaction.reply({ 
+                content: '❌ No tienes permisos para usar los comandos de configuración anti-raid.', 
+                ephemeral: true 
+            });
+        }
+        
+        const sub = interaction.options.getSubcommand?.() || interaction.options.getSubcommandGroup?.() || null;
+        
+        if (sub === 'activar') {
+            try {
+                AntiRaidConfig.updateGuildConfig(guildId, { enabled: true });
+                return await interaction.reply('✅ El sistema anti-raid ha sido activado.');
+            } catch (error) {
+                console.error('[AntiRaidCommands] Error activando:', error);
+                return await interaction.reply({ 
+                    content: '❌ Error al activar el sistema anti-raid.', 
+                    ephemeral: true 
+                });
+            }
+        }
+        
+        if (sub === 'desactivar') {
+            try {
+                AntiRaidConfig.updateGuildConfig(guildId, { enabled: false });
+                return await interaction.reply('⛔ El sistema anti-raid ha sido desactivado.');
+            } catch (error) {
+                console.error('[AntiRaidCommands] Error desactivando:', error);
+                return await interaction.reply({ 
+                    content: '❌ Error al desactivar el sistema anti-raid.', 
+                    ephemeral: true 
+                });
+            }
+        }
+        
+        if (sub === 'estado') {
+            try {
+                const estado = config.enabled ? '🟢 Activado' : '🔴 Desactivado';
+                const log = config.logChannel ? '<#' + config.logChannel + '>' : 'No configurado';
+                let mantenimiento = 'Desactivado';
+                if (config.maintenanceMode && config.maintenanceMode.active) {
+                    const ms = config.maintenanceMode.until - Date.now();
+                    mantenimiento = ms > 0 ? 'Activado (' + Math.ceil(ms/60000) + ' min restantes)' : 'Activado';
+                }
+                const response = '**Estado Anti-Raid:**\n' + estado + '\n' +
+                    '**Canal de logs:** ' + log + '\n' +
+                    '**Modo mantenimiento:** ' + mantenimiento + '\n' +
+                    '**Umbral de raid:** ' + config.raidThreshold.users + ' usuarios en ' + config.raidThreshold.seconds + 's\n' +
+                    '**Límite creación canales:** ' + config.channelCreateLimit.count + ' en ' + config.channelCreateLimit.seconds + 's\n' +
+                    '**Límite eliminación canales:** ' + config.channelDeleteLimit.count + ' en ' + config.channelDeleteLimit.seconds + 's\n' +
+                    '**Auto-ban:** ' + (config.autoBan ? 'Sí' : 'No') + '\n' +
+                    '**Rol de configuración:** ' + (config.permsRole ? '<@&' + config.permsRole + '>' : 'Solo admins') + '\n' +
+                    '**Whitelist usuarios:** ' + config.whitelist.users.length + '\n' +
+                    '**Whitelist roles:** ' + config.whitelist.roles.length;
+                return await interaction.reply(response);
+            } catch (error) {
+                console.error('[AntiRaidCommands] Error mostrando estado:', error);
+                return await interaction.reply({ 
+                    content: '❌ Error al mostrar el estado del sistema anti-raid.', 
+                    ephemeral: true 
+                });
+            }
+        }
+        
+        if (sub === 'ayuda') {
+            try {
+                const embed = {
+                    title: '🛡️ Ayuda Anti-Raid',
+                    description: 'Explicación de cada módulo y ejemplos de configuración.',
+                    fields: [
+                        { name: 'Sensibilidad', value: 'Ajusta la agresividad del sistema: /antiraid sensibilidad bajo/medio/alto', inline: false },
+                        { name: 'Canales excluidos', value: 'Excluye canales del anti-raid: /antiraid excludechannel add/remove/list #canal', inline: false },
+                        { name: 'Modo alerta', value: 'Solo alerta, sin ban/kick: /antiraid alertmode on/off', inline: false },
+                        { name: 'Modo pánico', value: 'Bloquea todos los canales: /antiraid panicmode on/off', inline: false },
+                        { name: 'Modo mantenimiento', value: 'Desactiva temporalmente el anti-raid: /antiraid mantenimiento on/off [minutos]', inline: false },
+                        { name: 'Whitelist temporal', value: 'Permite acceso temporal: /antiraid whitelisttemp add @usuario 10', inline: false },
+                        { name: 'Protecciones automáticas', value: 'Incluye detección de raids, spam, flood, cambios masivos, webhooks, invitaciones, global banlist y más.', inline: false },
+                        { name: 'Exportar/Importar', value: 'Próximamente: /antiraid export y /antiraid import para respaldos.', inline: false },
+                        { name: 'Ver estado', value: '/antiraid estado o /antiraid protecciones para ver la configuración actual.', inline: false }
+                    ]
+                };
+                return await interaction.reply({ embeds: [embed], ephemeral: true });
+            } catch (error) {
+                console.error('[AntiRaidCommands] Error mostrando ayuda:', error);
+                return await interaction.reply({ 
+                    content: '❌ Error al mostrar la ayuda.', 
+                    ephemeral: true 
+                });
+            }
+        }
+        
+        return await interaction.reply({ 
+            content: '❌ Comando o subcomando no reconocido. Usa /antiraid ayuda para ver las opciones.', 
+            ephemeral: true 
+        });
+        
+    } catch (error) {
+        console.error('[AntiRaidCommands] Error general en handleAntiRaidCommand:', error);
+        return await interaction.reply({ 
+            content: '❌ Ocurrió un error inesperado. Revisa la consola para más detalles.', 
+            ephemeral: true 
+        });
+    }
+});
     }
     // Subcomando principal
     const sub = interaction.options.getSubcommand?.() || interaction.options.getSubcommandGroup?.() || null;

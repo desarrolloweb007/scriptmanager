@@ -104,6 +104,8 @@ module.exports = {
     // Comando legacy con prefijo dinámico
     legacy: true,
     async executeLegacy(message, args) {
+        try {
+        try {
         if (!message.member.permissions.has(PermissionFlagsBits.MuteMembers)) {
             return await message.reply({
                 embeds: [new EmbedBuilder()

@@ -1,4 +1,4 @@
-const { EmbedBuilder, ChannelType } = require('discord.js');
+const { EmbedBuilder, ChannelType, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -6,9 +6,19 @@ module.exports = {
     name: 'ticketsetup',
     description: 'Configura el sistema de tickets del servidor',
     legacy: true,
-    data: { name: 'ticketsetup' },
+    data: new SlashCommandBuilder()
+        .setName('ticketsetup')
+        .setDescription('Comando ticketsetup'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
         const prefixManager = require('../utils/prefixManager');
         const currentPrefix = prefixManager.getPrefix(message.guild.id);

@@ -63,6 +63,8 @@ module.exports = {
     // Comando legacy con prefijo !
     legacy: true,
     async executeLegacy(message, args) {
+        try {
+        try {
         const guild = message.guild;
         const roles = guild.roles.cache
             .filter(role => !role.managed && role.name !== '@everyone')

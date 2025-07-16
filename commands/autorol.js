@@ -104,6 +104,8 @@ module.exports = {
     // Comando legacy con prefijo dinámico
     legacy: true,
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
         const prefixManager = require('../utils/prefixManager');
         const currentPrefix = prefixManager.getPrefix(message.guild.id);

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { addCategory } = require('../../utils/economyUtils');
 const { checkShopPermission } = require('../../utils/permissionsUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
@@ -7,13 +7,21 @@ module.exports = {
     name: 'addcategory',
     description: 'Crea una categoría personalizada de productos para la tienda',
     legacy: true,
-    data: { name: 'addcategory' },
+    data: new SlashCommandBuilder()
+        .setName('addcategory')
+        .setDescription('Comando addcategory'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'addcategory'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Verificar permisos de administración de tienda
         const hasPermission = await checkShopPermission(message.member);

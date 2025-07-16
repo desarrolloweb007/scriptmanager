@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -6,9 +6,19 @@ module.exports = {
     name: 'sgblock',
     description: 'Bloquea un comando específico para todos excepto un rol permitido',
     legacy: true,
-    data: { name: 'sgblock' },
+    data: new SlashCommandBuilder()
+        .setName('sgblock')
+        .setDescription('Comando sgblock'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
         const prefixManager = require('../utils/prefixManager');
         const currentPrefix = prefixManager.getPrefix(message.guild.id);

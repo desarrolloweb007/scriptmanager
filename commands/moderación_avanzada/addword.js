@@ -122,6 +122,8 @@ module.exports = {
     
     async executeLegacy(message, args) {
         try {
+        try {
+        try {
             // Verificar permisos usando modperms
             const modpermsCommand = require('./modperms.js');
             const hasPermission = await modpermsCommand.checkPermission(message, 'addword');

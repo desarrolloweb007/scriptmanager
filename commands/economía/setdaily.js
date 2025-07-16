@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { readJsonFile, writeJsonFile, getCurrencyName } = require('../../utils/economyUtils');
 const { checkShopPermission, validateAmount } = require('../../utils/permissionsUtils');
 const { hasPrefix, getArgs, getCurrentPrefix } = require('../../utils/prefixUtils');
@@ -10,13 +10,21 @@ module.exports = {
     name: 'setdaily',
     description: 'Establece la cantidad de dinero que da el comando daily',
     legacy: true,
-    data: { name: 'setdaily' },
+    data: new SlashCommandBuilder()
+        .setName('setdaily')
+        .setDescription('Comando setdaily'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    },
 
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar prefijo dinámico
-        if (!(await hasPrefix(message, 'setdaily'))) {
-            return;
-        }
+        // Verificación de prefijo manejada por el middleware
 
         // Verificar permisos de administración de tienda
         const hasPermission = await checkShopPermission(message.member);

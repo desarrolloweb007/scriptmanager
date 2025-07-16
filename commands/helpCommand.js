@@ -51,4 +51,20 @@ function buildHelpEmbed(categories, cat) {
         });
     }
     return embed;
-} 
+        } catch (error) {
+            console.error('Error en comando:', error);
+            await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setDescription('❌ Hubo un error al ejecutar este comando.')]
+            });
+        }
+            } catch (error) {
+            console.error('Error en comando:', error);
+            await message.reply({
+                embeds: [new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setDescription('❌ Hubo un error al ejecutar este comando.')]
+            });
+        }
+    }

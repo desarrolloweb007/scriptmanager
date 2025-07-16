@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -6,7 +6,15 @@ module.exports = {
     name: 'warnfilter',
     description: 'Sistema automático de filtro de palabras prohibidas',
     legacy: true,
-    data: { name: 'warnfilter' }, // Agregar data para compatibilidad
+    data: new SlashCommandBuilder()
+        .setName('warnfilter')
+        .setDescription('Comando warnfilter'),
+    async execute(interaction) {
+        await interaction.reply({ 
+            content: 'Comando en desarrollo. Usa la versión legacy por ahora.', 
+            ephemeral: true 
+        });
+    }, // Agregar data para compatibilidad
     
     // Función para verificar y filtrar mensajes
     async checkMessage(message) {

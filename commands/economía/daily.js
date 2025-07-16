@@ -71,6 +71,8 @@ module.exports = {
 
     async executeLegacy(message, args) {
         try {
+        try {
+        try {
             const userId = message.author.id;
             const guildId = message.guild.id;
             const currency = await getCurrencyName(guildId);

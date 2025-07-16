@@ -72,6 +72,8 @@ module.exports = {
     },
     
     async executeLegacy(message, args) {
+        try {
+        try {
         // Verificar permisos
         if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
             const embed = new EmbedBuilder()
