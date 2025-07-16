@@ -10,8 +10,8 @@ module.exports = {
     
     async executeLegacy(message, args) {
         // Verificar prefijo dinámico
-        const prefixCommand = require('../prefix.js');
-        const currentPrefix = prefixCommand.getPrefix(message.guild.id);
+        const prefixManager = require('../../utils/prefixManager');
+        const currentPrefix = prefixManager.getPrefix(message.guild.id);
         
         if (!message.content.startsWith(currentPrefix + 'setuptest')) {
             return;

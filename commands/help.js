@@ -81,26 +81,13 @@ function getCommandsByCategory(currentPrefix = '!') {
             useSlash ? '`/antiraid activar` - Activa el sistema anti-raid' : `\`${currentPrefix}antiraid activar\` - Activa el sistema anti-raid`,
             useSlash ? '`/antiraid desactivar` - Desactiva el sistema anti-raid' : `\`${currentPrefix}antiraid desactivar\` - Desactiva el sistema anti-raid`,
             useSlash ? '`/antiraid estado` - Muestra la configuración actual' : `\`${currentPrefix}antiraid estado\` - Muestra la configuración actual`,
-            useSlash ? '`/antiraid protecciones` - Estado de todos los módulos' : `\`${currentPrefix}antiraid protecciones\` - Estado de todos los módulos`,
-            useSlash ? '`/antiraid diagnostico` - Diagnóstico completo del sistema' : `\`${currentPrefix}antiraid diagnostico\` - Diagnóstico completo del sistema`,
-            useSlash ? '`/antiraid ayuda` - Explica cada módulo y cómo configurarlo' : `\`${currentPrefix}antiraid ayuda\` - Explica cada módulo y cómo configurarlo`,
-            useSlash ? '`/antiraid sensibilidad bajo/medio/alto` - Ajusta la sensibilidad' : `\`${currentPrefix}antiraid sensibilidad bajo/medio/alto\` - Ajusta la sensibilidad`,
             useSlash ? '`/antiraid config <opcion> <valor1> [valor2]` - Configura parámetros' : `\`${currentPrefix}antiraid config <opcion> <valor1> [valor2]\` - Configura parámetros`,
             useSlash ? '`/antiraid whitelist add/remove/list @usuario/@rol` - Gestiona la whitelist' : `\`${currentPrefix}antiraid whitelist add/remove/list @usuario/@rol\` - Gestiona la whitelist`,
             useSlash ? '`/antiraid blacklist add/remove/list @usuario/@rol` - Gestiona la blacklist' : `\`${currentPrefix}antiraid blacklist add/remove/list @usuario/@rol\` - Gestiona la blacklist`,
-            useSlash ? '`/antiraid whitelisttemp add/remove/list @usuario/@rol <minutos>` - Whitelist temporal' : `\`${currentPrefix}antiraid whitelisttemp add/remove/list @usuario/@rol <minutos>\` - Whitelist temporal`,
             useSlash ? '`/antiraid excludechannel add/remove/list #canal` - Excluye canales del anti-raid' : `\`${currentPrefix}antiraid excludechannel add/remove/list #canal\` - Excluye canales del anti-raid`,
             useSlash ? '`/antiraid alertmode on/off` - Solo alertas (sin ban/kick)' : `\`${currentPrefix}antiraid alertmode on/off\` - Solo alertas (sin ban/kick)`,
-            useSlash ? '`/antiraid panicmode on/off` - Bloqueo total de canales' : `\`${currentPrefix}antiraid panicmode on/off\` - Bloqueo total de canales`,
-            useSlash ? '`/antiraid logs` - Historial de eventos anti-raid' : `\`${currentPrefix}antiraid logs\` - Historial de eventos anti-raid`,
             useSlash ? '`/antiraid reset` - Restaura la configuración' : `\`${currentPrefix}antiraid reset\` - Restaura la configuración`,
-            useSlash ? '`/antiraid setlang es/en` - Cambia el idioma' : `\`${currentPrefix}antiraid setlang es/en\` - Cambia el idioma`,
-            useSlash ? '`/antiraid setunban on/off [minutos]` - Desban automático' : `\`${currentPrefix}antiraid setunban on/off [minutos]\` - Desban automático`,
-            useSlash ? '`/antiraid setcooldown <segundos>` - Cooldown entre acciones' : `\`${currentPrefix}antiraid setcooldown <segundos>\` - Cooldown entre acciones`,
-            useSlash ? '`/antiraid mantenimiento on/off [minutos]` - Modo mantenimiento' : `\`${currentPrefix}antiraid mantenimiento on/off [minutos]\` - Modo mantenimiento`,
-            useSlash ? '`/antiraid export` - Exporta la configuración anti-raid' : `\`${currentPrefix}antiraid export\` - Exporta la configuración anti-raid`,
-            useSlash ? '`/antiraid import` - Importa una configuración anti-raid' : `\`${currentPrefix}antiraid import\` - Importa una configuración anti-raid`,
-            useSlash ? '`/antiraid activar|desactivar|estado|config|whitelist|blacklist|whitelisttemp|excludechannel|alertmode|panicmode|logs|reset|setlang|setunban|setcooldown|mantenimiento|export|import` (legacy, con prefix)' : `\`${currentPrefix}antiraid activar|desactivar|estado|config|whitelist|blacklist|whitelisttemp|excludechannel|alertmode|panicmode|logs|reset|setlang|setunban|setcooldown|mantenimiento|export|import\` (legacy, con prefix)`
+            useSlash ? '`/antiraid ayuda` - Explica cada módulo y cómo configurarlo' : `\`${currentPrefix}antiraid ayuda\` - Explica cada módulo y cómo configurarlo`
         ]
     };
 }

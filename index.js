@@ -14,13 +14,10 @@ const client = new Client({
     ]
 });
 
-// 2. Importar AntiRaidManager después de definir client
-const AntiRaidManager = require('./scriptmanager/antiRaid/antiRaidManager');
-const { antiRaidCommands, handleAntiRaidCommand } = require('./scriptmanager/antiRaid/antiRaidCommands');
-
-// 3. Instanciar AntiRaidManager pasando el client
+// Sistema anti-raid rehabilitado con mejoras de robustez
+const AntiRaidManager = require('./antiRaid/antiRaidManager');
+const { antiRaidCommands, handleAntiRaidCommand } = require('./antiRaid/antiRaidCommands');
 const antiRaidManager = new AntiRaidManager(client);
-// Si prefieres inicializar listeners aparte, puedes usar: antiRaidManager.init();
 
 // 4. Registrar eventos y lógica del bot
 client.commands = new Collection();
@@ -142,8 +139,8 @@ client.on(Events.MessageCreate, async message => {
     } catch (error) {
         console.error('Error en filtro automático:', error);
     }
-    const prefixCommand = require('./commands/prefix.js');
-    const currentPrefix = prefixCommand.getPrefix(message.guild.id);
+    const prefixManager = require('./utils/prefixManager');
+    const currentPrefix = prefixManager.getPrefix(message.guild.id);
     if (!message.content.startsWith(currentPrefix)) return;
     const args = message.content.slice(currentPrefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
