@@ -15,8 +15,8 @@ const client = new Client({
 });
 
 // Sistema anti-raid rehabilitado con mejoras de robustez
-const AntiRaidManager = require('./antiRaid/antiRaidManager');
-const { antiRaidCommands, handleAntiRaidCommand } = require('./antiRaid/antiRaidCommands');
+const AntiRaidManager = require('./scriptmanager/antiRaid/antiRaidManager');
+const { antiRaidCommands, handleAntiRaidCommand } = require('./scriptmanager/antiRaid/antiRaidCommands');
 const antiRaidManager = new AntiRaidManager(client);
 
 // 4. Registrar eventos y lógica del bot
