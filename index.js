@@ -3,12 +3,6 @@ const { Client, GatewayIntentBits, Collection, Events, PermissionFlagsBits } = r
 const fs = require('fs');
 const path = require('path');
 
-// --- INTEGRACIÓN SISTEMA ANTI-RAID ---
-const AntiRaidManager = require('./scriptmanager/antiRaid/antiRaidManager');
-const { antiRaidCommands, handleAntiRaidCommand } = require('./scriptmanager/antiRaid/antiRaidCommands');
-
-const antiRaidManager = new AntiRaidManager(client);
-
 // Crear cliente con intents necesarios
 const client = new Client({
     intents: [
@@ -19,6 +13,11 @@ const client = new Client({
         GatewayIntentBits.GuildModeration
     ]
 });
+
+// --- INTEGRACIÓN SISTEMA ANTI-RAID ---
+const AntiRaidManager = require('./scriptmanager/antiRaid/antiRaidManager');
+const { antiRaidCommands, handleAntiRaidCommand } = require('./scriptmanager/antiRaid/antiRaidCommands');
+const antiRaidManager = new AntiRaidManager(client);
 
 // Colección para almacenar comandos
 client.commands = new Collection();
