@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 // --- INTEGRACIÓN SISTEMA ANTI-RAID ---
-const AntiRaidManager = require('./antiRaid/antiRaidManager');
-const { antiRaidCommands, handleAntiRaidCommand } = require('./antiRaid/antiRaidCommands');
+const AntiRaidManager = require('./scriptmanager/antiRaid/antiRaidManager');
+const { antiRaidCommands, handleAntiRaidCommand } = require('./scriptmanager/antiRaid/antiRaidCommands');
 
 const antiRaidManager = new AntiRaidManager(client);
 
